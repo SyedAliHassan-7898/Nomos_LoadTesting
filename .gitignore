@@ -1,0 +1,5 @@
+summary*.json
+node_modules/
+*.log
+environment.js
+*.reports/

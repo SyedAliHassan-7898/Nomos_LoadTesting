@@ -1,0 +1,5 @@
+Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,Received KB/sec,Sent KB/sec,Avg. Bytes
+create_customer,109,805.17,170.4,4556.09,0,18.3486,1.027,6.62,77.9,6604
+expected_response:true,109,990.47,134.53,55804.57,0,18.3486,1.027,6.62,77.9,6604
+file_upload,109,574.46,191.09,3761.79,0,18.3486,1.027,6.62,77.9,6604
+login,109,314.84,134.53,663.01,0,18.3486,1.027,6.62,77.9,6604

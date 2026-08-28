@@ -1,0 +1,2077 @@
+{
+  "root_group": {
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [],
+    "checks": [
+        {
+          "name": "login/wrong_password: status is 400/401/403/404/422",
+          "path": "::login/wrong_password: status is 400/401/403/404/422",
+          "id": "9f97af8769a95dbbe0316217368ff8fd",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "login/wrong_password: success=false",
+          "path": "::login/wrong_password: success=false",
+          "id": "8cb7561deb68c539ef7880cb61e9abc1",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::login/wrong_password: never a 5xx (server did not crash)",
+          "id": "1b404d440b70c2f494d7aff613e26fce",
+          "passes": 1,
+          "fails": 0,
+          "name": "login/wrong_password: never a 5xx (server did not crash)"
+        },
+        {
+          "name": "login/unknown_email: status is 400/401/404",
+          "path": "::login/unknown_email: status is 400/401/404",
+          "id": "d54563e00a47a36e8a9118503bb86278",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "login/unknown_email: success=false",
+          "path": "::login/unknown_email: success=false",
+          "id": "a30fce902697004d9ebfa04223c78004"
+        },
+        {
+          "path": "::login/unknown_email: never a 5xx (server did not crash)",
+          "id": "0c2ed19b142267e996cb59de89cd4dd9",
+          "passes": 1,
+          "fails": 0,
+          "name": "login/unknown_email: never a 5xx (server did not crash)"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "login/missing_password: status is 400",
+          "path": "::login/missing_password: status is 400",
+          "id": "a6b03ab977924186124a8ec09b0960b8"
+        },
+        {
+          "fails": 0,
+          "name": "login/missing_password: never a 5xx (server did not crash)",
+          "path": "::login/missing_password: never a 5xx (server did not crash)",
+          "id": "710eb8b462fce25d3669094a064770cc",
+          "passes": 1
+        },
+        {
+          "name": "login/empty_body: status is 400",
+          "path": "::login/empty_body: status is 400",
+          "id": "075d96d61e2d897fa48552e301c5ea58",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::login/empty_body: never a 5xx (server did not crash)",
+          "id": "bc84d242de562fccf2fd558acab8f07d",
+          "passes": 1,
+          "fails": 0,
+          "name": "login/empty_body: never a 5xx (server did not crash)"
+        },
+        {
+          "path": "::login/malformed_json: status is 400",
+          "id": "2f572c90819529e77d02d59673f25055",
+          "passes": 1,
+          "fails": 0,
+          "name": "login/malformed_json: status is 400"
+        },
+        {
+          "id": "5c5111c518e223b667ea89051a26cbbb",
+          "passes": 1,
+          "fails": 0,
+          "name": "login/malformed_json: never a 5xx (server did not crash)",
+          "path": "::login/malformed_json: never a 5xx (server did not crash)"
+        },
+        {
+          "name": "login/sql_injection: status is 400/401",
+          "path": "::login/sql_injection: status is 400/401",
+          "id": "0a5f9adc80c267bd6110d6915d59449a",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "login/sql_injection: never a 5xx (server did not crash)",
+          "path": "::login/sql_injection: never a 5xx (server did not crash)",
+          "id": "ac19d684842191e32df2905bf7058e6c",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "login/oversized_email: status is 400/413/414",
+          "path": "::login/oversized_email: status is 400/413/414",
+          "id": "f8a26406401718fbc273ea3e9ee7535c",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "login/oversized_email: never a 5xx (server did not crash)",
+          "path": "::login/oversized_email: never a 5xx (server did not crash)",
+          "id": "993cb3489500bf92320c7b0840ac01cd",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "eb8b3eab12980998a6434fe22d683916",
+          "passes": 1,
+          "fails": 0,
+          "name": "profile/no_token: status is 401",
+          "path": "::profile/no_token: status is 401"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "profile/no_token: never a 5xx (server did not crash)",
+          "path": "::profile/no_token: never a 5xx (server did not crash)",
+          "id": "13ac4adf3402878b78f93601cd0a3ffe"
+        },
+        {
+          "fails": 0,
+          "name": "profile/tampered_token: status is 401",
+          "path": "::profile/tampered_token: status is 401",
+          "id": "41b2534371ab902be08c0a405976ac0c",
+          "passes": 1
+        },
+        {
+          "fails": 0,
+          "name": "profile/tampered_token: never a 5xx (server did not crash)",
+          "path": "::profile/tampered_token: never a 5xx (server did not crash)",
+          "id": "115d73fbb6cc2ecdf25edf4b235e8d6a",
+          "passes": 1
+        },
+        {
+          "id": "4f0ea0e6650a0c43749dd2f0b60c423d",
+          "passes": 1,
+          "fails": 0,
+          "name": "logout/no_token: status is 401",
+          "path": "::logout/no_token: status is 401"
+        },
+        {
+          "name": "logout/no_token: never a 5xx (server did not crash)",
+          "path": "::logout/no_token: never a 5xx (server did not crash)",
+          "id": "5b9755dd8c4952ac87bb4d30a7054c4c",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::refresh/garbage_token: status is 400/401",
+          "id": "d80765a22dd950d9c85e5cea5d454f5d",
+          "passes": 1,
+          "fails": 0,
+          "name": "refresh/garbage_token: status is 400/401"
+        },
+        {
+          "fails": 0,
+          "name": "refresh/garbage_token: never a 5xx (server did not crash)",
+          "path": "::refresh/garbage_token: never a 5xx (server did not crash)",
+          "id": "c859bad4696f05a3258ed8a79bac7944",
+          "passes": 1
+        },
+        {
+          "name": "refresh/missing_field: status is 400",
+          "path": "::refresh/missing_field: status is 400",
+          "id": "ebadf454b3c8685140491eface7a192a",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "refresh/missing_field: never a 5xx (server did not crash)",
+          "path": "::refresh/missing_field: never a 5xx (server did not crash)",
+          "id": "a1391e10a03bc16ac0c8808893a0cd4b",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "login/valid: status is 200/201",
+          "path": "::login/valid: status is 200/201",
+          "id": "3bf5322b0ac6c77516444a5bb49a948b",
+          "passes": 3
+        },
+        {
+          "name": "login/valid: success=true",
+          "path": "::login/valid: success=true",
+          "id": "df7a60d2555d688f6793a9f7414a1e7a",
+          "passes": 3,
+          "fails": 0
+        },
+        {
+          "name": "login/valid: has data.user.accessToken",
+          "path": "::login/valid: has data.user.accessToken",
+          "id": "879f9581a853333d52e78661efd6b732",
+          "passes": 3,
+          "fails": 0
+        },
+        {
+          "name": "login/valid: never a 5xx (server did not crash)",
+          "path": "::login/valid: never a 5xx (server did not crash)",
+          "id": "549cb1ad3c1561eaa8eddfa6e2510dee",
+          "passes": 3,
+          "fails": 0
+        },
+        {
+          "id": "1c1acf7f81d15ec0e957d55579f08941",
+          "passes": 1,
+          "fails": 0,
+          "name": "refresh/valid: status is 200/201",
+          "path": "::refresh/valid: status is 200/201"
+        },
+        {
+          "path": "::refresh/valid: never a 5xx (server did not crash)",
+          "id": "eb21e109c2a9ed3b6e2f182b92e93937",
+          "passes": 1,
+          "fails": 0,
+          "name": "refresh/valid: never a 5xx (server did not crash)"
+        },
+        {
+          "name": "logout/valid: status is 200/201",
+          "path": "::logout/valid: status is 200/201",
+          "id": "724adbae609ced914667714ee5257aff",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "logout/valid: never a 5xx (server did not crash)",
+          "path": "::logout/valid: never a 5xx (server did not crash)",
+          "id": "7d795bc072cee5a268a8eb533261de5f",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "dashboard/counts: status is 200",
+          "path": "::dashboard/counts: status is 200",
+          "id": "3adb255b11906f1dfa98d7724223280c",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "dashboard/counts: has data.dashboard.totalCustomers",
+          "path": "::dashboard/counts: has data.dashboard.totalCustomers",
+          "id": "4cc536c3be15cc79131cca3440f0aab8",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 1,
+          "name": "upload/unauthenticated: status is 401",
+          "path": "::upload/unauthenticated: status is 401",
+          "id": "ca1d926b7ab21e8d4cb186d87dbdb645",
+          "passes": 0
+        },
+        {
+          "fails": 0,
+          "name": "upload/unauthenticated: never a 5xx (server did not crash)",
+          "path": "::upload/unauthenticated: never a 5xx (server did not crash)",
+          "id": "e0e0206dd6f04a6478ea31d090b5e9dd",
+          "passes": 1
+        },
+        {
+          "path": "::upload/invalid_type: status is 400/415",
+          "id": "2090ce222ed723bc76be0919da0d477e",
+          "passes": 0,
+          "fails": 1,
+          "name": "upload/invalid_type: status is 400/415"
+        },
+        {
+          "path": "::upload/invalid_type: never a 5xx (server did not crash)",
+          "id": "156d54799fb3725b4140a37c93dd406f",
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/invalid_type: never a 5xx (server did not crash)"
+        },
+        {
+          "fails": 1,
+          "name": "upload/oversized: status is 400/413",
+          "path": "::upload/oversized: status is 400/413",
+          "id": "079080b0590d2d24105daef0e9b5a58c",
+          "passes": 0
+        },
+        {
+          "name": "upload/oversized: never a 5xx (server did not crash)",
+          "path": "::upload/oversized: never a 5xx (server did not crash)",
+          "id": "b965a18ad99ac73c9236a3a7ce4e17a4",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "upload/profile: status is 200/201",
+          "path": "::upload/profile: status is 200/201",
+          "id": "2e7e209b1bbe32e0757a960f98ab5c35",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "upload/profile: never a 5xx (server did not crash)",
+          "path": "::upload/profile: never a 5xx (server did not crash)",
+          "id": "71a7893607d76541738a41d97cf0c0fe",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "cf54055d3b08cb854dd3d53fc62736ef",
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/profile: success=true",
+          "path": "::upload/profile: success=true"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/profile: file key returned",
+          "path": "::upload/profile: file key returned",
+          "id": "93f0c41e3871b7ac3abd9362f60fe271"
+        },
+        {
+          "path": "::upload/bg: status is 200/201",
+          "id": "3988e247afb808967d86746293128c3e",
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/bg: status is 200/201"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/bg: never a 5xx (server did not crash)",
+          "path": "::upload/bg: never a 5xx (server did not crash)",
+          "id": "d869cbdae1294c18fe63f7d489047e56"
+        },
+        {
+          "path": "::upload/bg: success=true",
+          "id": "cc80ad47b9f4fbb126ad92ddc74e47f1",
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/bg: success=true"
+        },
+        {
+          "name": "upload/bg: file key returned",
+          "path": "::upload/bg: file key returned",
+          "id": "b0ba6657d4cbcc3996480f6ed6e3c7f4",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "upload/email_logo: status is 200/201",
+          "path": "::upload/email_logo: status is 200/201",
+          "id": "4f4a1ac6fe75e85fd171d643b349eab4",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "upload/email_logo: never a 5xx (server did not crash)",
+          "path": "::upload/email_logo: never a 5xx (server did not crash)",
+          "id": "4247e883565a366cbecdadcc39c58bbb",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "upload/email_logo: success=true",
+          "path": "::upload/email_logo: success=true",
+          "id": "d4eda8fcafaceef78e3cdc14f0e93a93",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "upload/email_logo: file key returned",
+          "path": "::upload/email_logo: file key returned",
+          "id": "1aa98d2334ab9c1c511063a23dd0ccc1",
+          "passes": 1
+        },
+        {
+          "name": "upload/favicon: status is 200/201",
+          "path": "::upload/favicon: status is 200/201",
+          "id": "e999db35b54738531e656c7932ab8f3b",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "upload/favicon: never a 5xx (server did not crash)",
+          "path": "::upload/favicon: never a 5xx (server did not crash)",
+          "id": "55d7ad33a6d8bdf8251900ccbd969a7c",
+          "passes": 1
+        },
+        {
+          "name": "upload/favicon: success=true",
+          "path": "::upload/favicon: success=true",
+          "id": "2c7ae55af76c73238de2916b26dabe7c",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "upload/favicon: file key returned",
+          "path": "::upload/favicon: file key returned",
+          "id": "afc2ec66a45da74156c18c95bce89dc6",
+          "passes": 1
+        },
+        {
+          "name": "upload/login_logo: status is 200/201",
+          "path": "::upload/login_logo: status is 200/201",
+          "id": "d04c8a5c102ee58bd9f2336efab72c93",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "upload/login_logo: never a 5xx (server did not crash)",
+          "path": "::upload/login_logo: never a 5xx (server did not crash)",
+          "id": "5b7c36d77b2fc7eb36b30571032da38f",
+          "passes": 1
+        },
+        {
+          "name": "upload/login_logo: success=true",
+          "path": "::upload/login_logo: success=true",
+          "id": "5137852149dd49c5d6fe64736136be13",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::upload/login_logo: file key returned",
+          "id": "f1221efd04d35bc0e43b775d212bc2f1",
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/login_logo: file key returned"
+        },
+        {
+          "name": "upload/sidebar_logo: status is 200/201",
+          "path": "::upload/sidebar_logo: status is 200/201",
+          "id": "fcb819fdf7fa1d0969875410b5f0913e",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "bf337f3b528eb04401b3c99a1e4f7a62",
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/sidebar_logo: never a 5xx (server did not crash)",
+          "path": "::upload/sidebar_logo: never a 5xx (server did not crash)"
+        },
+        {
+          "name": "upload/sidebar_logo: success=true",
+          "path": "::upload/sidebar_logo: success=true",
+          "id": "bed443113e43b209905a8593b9e098d1",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "upload/sidebar_logo: file key returned",
+          "path": "::upload/sidebar_logo: file key returned",
+          "id": "d4a6626fc864394c189db82ee0302a36",
+          "passes": 1
+        },
+        {
+          "path": "::upload/welcome: status is 200/201",
+          "id": "2be68a19770f8ec78627721b358a8033",
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/welcome: status is 200/201"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/welcome: never a 5xx (server did not crash)",
+          "path": "::upload/welcome: never a 5xx (server did not crash)",
+          "id": "ece79d95ab7a5e91735159fec9f924f3"
+        },
+        {
+          "fails": 0,
+          "name": "upload/welcome: success=true",
+          "path": "::upload/welcome: success=true",
+          "id": "5df8755994f9d08cd610baca11deb333",
+          "passes": 1
+        },
+        {
+          "path": "::upload/welcome: file key returned",
+          "id": "26cfdbe7b65e615ce03720fb111a7126",
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/welcome: file key returned"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/theme_assets: all seven image fields returned keys",
+          "path": "::upload/theme_assets: all seven image fields returned keys",
+          "id": "08d9a69b6f127f3519dfd71c5d8c9020"
+        },
+        {
+          "path": "::upload/theme_assets: each image field received a distinct storage key",
+          "id": "4f72b8a33318d33dac5fe90c2889d72c",
+          "passes": 1,
+          "fails": 0,
+          "name": "upload/theme_assets: each image field received a distinct storage key"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "create_customer/negative_empty_payload: status is 400",
+          "path": "::create_customer/negative_empty_payload: status is 400",
+          "id": "3da72ce146001dd2e2fe6b872342685c"
+        },
+        {
+          "id": "342ffb319c8522b68488aff64d434f75",
+          "passes": 1,
+          "fails": 0,
+          "name": "create_customer/negative_empty_payload: never a 5xx (server did not crash)",
+          "path": "::create_customer/negative_empty_payload: never a 5xx (server did not crash)"
+        },
+        {
+          "name": "create_customer/negative_invalid_types: status is 400",
+          "path": "::create_customer/negative_invalid_types: status is 400",
+          "id": "b72f8290e3ebf54211299b7d1efd264c",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "create_customer/negative_invalid_types: never a 5xx (server did not crash)",
+          "path": "::create_customer/negative_invalid_types: never a 5xx (server did not crash)",
+          "id": "89811b094a717a1f9fe03da2d69eca35",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "create_customer/negative_oversized_fields: status is 200/201/400",
+          "path": "::create_customer/negative_oversized_fields: status is 200/201/400",
+          "id": "5efba42da093b922826e230e74f32efa",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "create_customer/negative_oversized_fields: never a 5xx (server did not crash)",
+          "path": "::create_customer/negative_oversized_fields: never a 5xx (server did not crash)",
+          "id": "a9a2f171df193fd1983ea0a8ca43d447",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "create_customer/negative_injection_strings: status is 200/201/400",
+          "path": "::create_customer/negative_injection_strings: status is 200/201/400",
+          "id": "4063f5397db9d08e36b629eace1536b4"
+        },
+        {
+          "path": "::create_customer/negative_injection_strings: never a 5xx (server did not crash)",
+          "id": "286363975b4c5c1e26a4037ef4a49d03",
+          "passes": 1,
+          "fails": 0,
+          "name": "create_customer/negative_injection_strings: never a 5xx (server did not crash)"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "create_customer/negative_unauthenticated_create: status is 401",
+          "path": "::create_customer/negative_unauthenticated_create: status is 401",
+          "id": "f4d13a1e8573171dfc2bdeb0d46a8a32"
+        },
+        {
+          "name": "create_customer/negative_unauthenticated_create: never a 5xx (server did not crash)",
+          "path": "::create_customer/negative_unauthenticated_create: never a 5xx (server did not crash)",
+          "id": "98d3dac323a58e11bcc2473bf1e19e01",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "create_customer/positive_create_client: status is 200/201",
+          "path": "::create_customer/positive_create_client: status is 200/201",
+          "id": "b9244d719a9e96e0d6a64b89976f2a24"
+        },
+        {
+          "id": "f39987691d4e38fcdedf1797b3331491",
+          "passes": 1,
+          "fails": 0,
+          "name": "create_customer/positive_create_client: never a 5xx (server did not crash)",
+          "path": "::create_customer/positive_create_client: never a 5xx (server did not crash)"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "client_login/step1: status is 200/201",
+          "path": "::client_login/step1: status is 200/201",
+          "id": "e1e5442540fd93263e8752ed13aad6a1"
+        },
+        {
+          "path": "::client_login/step1: never a 5xx (server did not crash)",
+          "id": "d780dbf6d8505d1953dc51834c459642",
+          "passes": 1,
+          "fails": 0,
+          "name": "client_login/step1: never a 5xx (server did not crash)"
+        },
+        {
+          "id": "0ce461230ac405985ce549ed9e3931ac",
+          "passes": 1,
+          "fails": 0,
+          "name": "client_login/step2_force: status is 200/201",
+          "path": "::client_login/step2_force: status is 200/201"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "client_login/step2_force: never a 5xx (server did not crash)",
+          "path": "::client_login/step2_force: never a 5xx (server did not crash)",
+          "id": "87d27f55d53bf5e8f1b02d7540dfb21c"
+        },
+        {
+          "name": "tenant_admin/sidebar: status is 200",
+          "path": "::tenant_admin/sidebar: status is 200",
+          "id": "9f39431a625830b59af00aec41a1ef7d",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "9be3dfa8b11adb74cfc684a79c41b31f",
+          "passes": 1,
+          "fails": 0,
+          "name": "tenant_admin/notification_modules: status is 200",
+          "path": "::tenant_admin/notification_modules: status is 200"
+        },
+        {
+          "fails": 0,
+          "name": "tenant_admin/key_bundle: status is 200",
+          "path": "::tenant_admin/key_bundle: status is 200",
+          "id": "cba08a5ddfff486b7da57d462a8c9019",
+          "passes": 1
+        },
+        {
+          "name": "tenant_admin/profile: status is 200",
+          "path": "::tenant_admin/profile: status is 200",
+          "id": "fc39b904c27fe333d4e0f579d252cf45",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "a96beaaeaf5bbddd017aaf143e8f4d2d",
+          "passes": 1,
+          "fails": 0,
+          "name": "tenant_admin/notifications_list: status is 200",
+          "path": "::tenant_admin/notifications_list: status is 200"
+        },
+        {
+          "fails": 0,
+          "name": "tenant_admin/home: status is 200",
+          "path": "::tenant_admin/home: status is 200",
+          "id": "413dee316c57c75322cdd17b689f4c97",
+          "passes": 1
+        },
+        {
+          "name": "tenant_admin/get_posts: status is 200",
+          "path": "::tenant_admin/get_posts: status is 200",
+          "id": "893c79f20b4693d67705eb2b99c889e0",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "tenant_admin/feed_upload: status is 200/201",
+          "path": "::tenant_admin/feed_upload: status is 200/201",
+          "id": "52049cd0c83bbe64bbb0a0cc2e107570",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "tenant_admin/create_post: status is 200/201",
+          "path": "::tenant_admin/create_post: status is 200/201",
+          "id": "ad9c8faa488f2f2272f186e2189ded48",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "ff94b768dfc5843881127a3742c19a66",
+          "passes": 1,
+          "fails": 0,
+          "name": "tenant_admin/toggle_like: status is 200/201",
+          "path": "::tenant_admin/toggle_like: status is 200/201"
+        },
+        {
+          "name": "tenant_admin/add_comment: status is 200/201",
+          "path": "::tenant_admin/add_comment: status is 200/201",
+          "id": "da6fb8996ccc120d15f4cce034d668ae",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "tenant_admin/get_comments: status is 200",
+          "path": "::tenant_admin/get_comments: status is 200",
+          "id": "d1cb9cd09c9f5d698198df0e747d57d1"
+        },
+        {
+          "path": "::tenant_admin/get_categories: status is 200",
+          "id": "ac98eb8e676d04bfb6b41aa282d0b777",
+          "passes": 1,
+          "fails": 0,
+          "name": "tenant_admin/get_categories: status is 200"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "tenant_admin/get_labels: status is 200",
+          "path": "::tenant_admin/get_labels: status is 200",
+          "id": "40dfa6a8cdf723a9b441952da812608a"
+        },
+        {
+          "path": "::tenant_admin/get_news: status is 200",
+          "id": "420739fb4c49410b7757e9393c7b4528",
+          "passes": 2,
+          "fails": 0,
+          "name": "tenant_admin/get_news: status is 200"
+        },
+        {
+          "fails": 0,
+          "name": "tenant_admin/run_news_feed: status is 200/201",
+          "path": "::tenant_admin/run_news_feed: status is 200/201",
+          "id": "34e792897f4570a4e1e7d1ebe7c0c898",
+          "passes": 1
+        },
+        {
+          "name": "tenant_admin/news_upload: status is 200/201",
+          "path": "::tenant_admin/news_upload: status is 200/201",
+          "id": "315ee86c4cc717764db99d7ce9da80fe",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "tenant_admin/add_news: status is 200/201",
+          "path": "::tenant_admin/add_news: status is 200/201",
+          "id": "ce35dcf42aa2c92a3858f7a73bb032c1"
+        },
+        {
+          "name": "tenant_admin/get_news_final: status is 200",
+          "path": "::tenant_admin/get_news_final: status is 200",
+          "id": "ef64340a8dce82ae83bb352344071758",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/seed: status is 200/201",
+          "path": "::category/seed: status is 200/201",
+          "id": "c753bd3e301a583658ab2534da3ec674",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/seed: never a 5xx (server did not crash)",
+          "path": "::category/seed: never a 5xx (server did not crash)",
+          "id": "a4455c1d1715974a81a96eb67cd5be6d",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::category/modules: status is 200",
+          "id": "d521a0e98ad7213b62cbf27e284911bd",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/modules: status is 200"
+        },
+        {
+          "name": "category/modules: never a 5xx (server did not crash)",
+          "path": "::category/modules: never a 5xx (server did not crash)",
+          "id": "6a34123fde7e0342aa3b6f8b8b425b3e",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/modules: News module id resolved from API",
+          "path": "::category/modules: News module id resolved from API",
+          "id": "0158bc6ba0a08700156e17d30315a614",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "category/modules: Events module id resolved from API",
+          "path": "::category/modules: Events module id resolved from API",
+          "id": "5a9db638bc1316d5c46d6ae07a327f8c"
+        },
+        {
+          "fails": 0,
+          "name": "category/modules: Forum module id resolved from API",
+          "path": "::category/modules: Forum module id resolved from API",
+          "id": "b4355d3f1ca10d1d5424a8cad90b7d78",
+          "passes": 1
+        },
+        {
+          "name": "category/modules: Courses module id resolved from API",
+          "path": "::category/modules: Courses module id resolved from API",
+          "id": "4a26614c72a572f37367495a2e0d1b36",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/modules: Challenges module id resolved from API",
+          "path": "::category/modules: Challenges module id resolved from API",
+          "id": "1d6328237246dd296fde8067c1e625a4",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 2,
+          "fails": 0,
+          "name": "category/news: module id is available",
+          "path": "::category/news: module id is available",
+          "id": "38bc74aaa159d4d68200bcd5158657d0"
+        },
+        {
+          "name": "category/list_news: status is 200",
+          "path": "::category/list_news: status is 200",
+          "id": "1590301068c4c06c7f32c2f74ce6f9c0",
+          "passes": 2,
+          "fails": 0
+        },
+        {
+          "name": "category/list_news: never a 5xx (server did not crash)",
+          "path": "::category/list_news: never a 5xx (server did not crash)",
+          "id": "9d70427ae7de3c4ca4029a10395119d5",
+          "passes": 2,
+          "fails": 0
+        },
+        {
+          "name": "category/news/existing: category has module association",
+          "path": "::category/news/existing: category has module association",
+          "id": "e0d1ceb21112229f0bb9f0160809b808",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/news/existing: category module is News",
+          "path": "::category/news/existing: category module is News",
+          "id": "5e97a8d1db3881e4e5bee898bbb92aaf",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/news/existing: category module id matches selected module",
+          "path": "::category/news/existing: category module id matches selected module",
+          "id": "766bd427b4f45bb57c24fb8e53e23f5e",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/create_news: never a 5xx (server did not crash)",
+          "path": "::category/create_news: never a 5xx (server did not crash)",
+          "id": "1dea416f73e359bdacca37bdf44f41f7",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/news/created: category has module association",
+          "path": "::category/news/created: category has module association",
+          "id": "10bb82b1ea8abdc318fae672ad097bf9",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::category/news/created: category module is News",
+          "id": "cfedb0fc8990a413737f1b2e6b760a91",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/news/created: category module is News"
+        },
+        {
+          "name": "category/news/created: category module id matches selected module",
+          "path": "::category/news/created: category module id matches selected module",
+          "id": "d2340fa24fcfaed3e42e100f09fdf853",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/events: module id is available",
+          "path": "::category/events: module id is available",
+          "id": "2a8267551cebfc14829098c82a70f206",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "65fefe9636052bc454674d81cca778b2",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/list_events: status is 200",
+          "path": "::category/list_events: status is 200"
+        },
+        {
+          "id": "eb5f8ed97125d3480719808dd2e040a9",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/list_events: never a 5xx (server did not crash)",
+          "path": "::category/list_events: never a 5xx (server did not crash)"
+        },
+        {
+          "name": "category/create_events: never a 5xx (server did not crash)",
+          "path": "::category/create_events: never a 5xx (server did not crash)",
+          "id": "d72224b8490c7f18443432cd8dd6e167",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/events/created: category has module association",
+          "path": "::category/events/created: category has module association",
+          "id": "5132cb2e4d62ab115d898f7858fb6a89",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/events/created: category module is Events",
+          "path": "::category/events/created: category module is Events",
+          "id": "4c03c9baac4cd620194941fd21684f5c",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/events/created: category module id matches selected module",
+          "path": "::category/events/created: category module id matches selected module",
+          "id": "22c11d73ac1a1efe0f012f3447b1e13f",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "category/forum: module id is available",
+          "path": "::category/forum: module id is available",
+          "id": "e1f4ceffc96e811093535690ae8647e9",
+          "passes": 1
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "category/list_forum: status is 200",
+          "path": "::category/list_forum: status is 200",
+          "id": "4aadc89fa22e93f7fc84c0c9eea5e7ac"
+        },
+        {
+          "id": "b977d4acc2d2b5b2350ddb36a5920d6c",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/list_forum: never a 5xx (server did not crash)",
+          "path": "::category/list_forum: never a 5xx (server did not crash)"
+        },
+        {
+          "name": "category/create_forum: never a 5xx (server did not crash)",
+          "path": "::category/create_forum: never a 5xx (server did not crash)",
+          "id": "618ffd2a181d8d73c3e2de21cfd9616d",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "0cacddf4bbd50d24abcd6232ead0d4dd",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/forum/created: category has module association",
+          "path": "::category/forum/created: category has module association"
+        },
+        {
+          "id": "6ec08624a733199d3abcd3355369e041",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/forum/created: category module is Forum",
+          "path": "::category/forum/created: category module is Forum"
+        },
+        {
+          "name": "category/forum/created: category module id matches selected module",
+          "path": "::category/forum/created: category module id matches selected module",
+          "id": "2ca5ab5f225d6170494a05b12f3dc9e1",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "category/courses: module id is available",
+          "path": "::category/courses: module id is available",
+          "id": "d48a1113cf6000066815653c25f2a82e"
+        },
+        {
+          "name": "category/list_courses: status is 200",
+          "path": "::category/list_courses: status is 200",
+          "id": "a14298f9f4087abcf0048f9134ec5c84",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "cf84deb4eaa2b3a41f85c7eea0586e16",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/list_courses: never a 5xx (server did not crash)",
+          "path": "::category/list_courses: never a 5xx (server did not crash)"
+        },
+        {
+          "path": "::category/create_courses: never a 5xx (server did not crash)",
+          "id": "99a251cb312a9f5499e6fbff683e51be",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/create_courses: never a 5xx (server did not crash)"
+        },
+        {
+          "fails": 0,
+          "name": "category/courses/created: category has module association",
+          "path": "::category/courses/created: category has module association",
+          "id": "1ded5806fb79bee9488189fc258430d8",
+          "passes": 1
+        },
+        {
+          "name": "category/courses/created: category module is Courses",
+          "path": "::category/courses/created: category module is Courses",
+          "id": "e13deb8c251bd37cfcd53376b969c47b",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "6ab21196dcc2bd23e6de05caff2d601f",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/courses/created: category module id matches selected module",
+          "path": "::category/courses/created: category module id matches selected module"
+        },
+        {
+          "name": "category/challenges: module id is available",
+          "path": "::category/challenges: module id is available",
+          "id": "45095864261678e9485e644ba95933a1",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/list_challenges: status is 200",
+          "path": "::category/list_challenges: status is 200",
+          "id": "7fd462bda6f7c5b2a6ca991b77cb1999",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::category/list_challenges: never a 5xx (server did not crash)",
+          "id": "cffa2fc006854a18da9e359dd8d9a79d",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/list_challenges: never a 5xx (server did not crash)"
+        },
+        {
+          "path": "::category/create_challenges: never a 5xx (server did not crash)",
+          "id": "7b6bce0e124f1fa2abbbd604725de9c5",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/create_challenges: never a 5xx (server did not crash)"
+        },
+        {
+          "name": "category/challenges/created: category has module association",
+          "path": "::category/challenges/created: category has module association",
+          "id": "ab620b644d6311423ab642e953a7bb53",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/challenges/created: category module is Challenges",
+          "path": "::category/challenges/created: category module is Challenges",
+          "id": "8d8c0162ab0b9056b66b002dc160d2e7",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "3b89ac4c8426e1abbac46d252a766f50",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/challenges/created: category module id matches selected module",
+          "path": "::category/challenges/created: category module id matches selected module"
+        },
+        {
+          "path": "::category/isolation: News category id resolved",
+          "id": "9f04e942e772653a065be345139e6ed2",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/isolation: News category id resolved"
+        },
+        {
+          "name": "category/isolation: News (new create) category id resolved",
+          "path": "::category/isolation: News (new create) category id resolved",
+          "id": "0385d23cff8dfdbe2be5a551ea46ff33",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "category/isolation: Events category id resolved",
+          "path": "::category/isolation: Events category id resolved",
+          "id": "9a603b40de55ee8ddce3db61a6b56f2c",
+          "passes": 1
+        },
+        {
+          "id": "305f629820a4eb8beb998ff5b0bccba2",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/isolation: Forum category id resolved",
+          "path": "::category/isolation: Forum category id resolved"
+        },
+        {
+          "name": "category/isolation: Courses category id resolved",
+          "path": "::category/isolation: Courses category id resolved",
+          "id": "706138b25e413359ac0292bab27aa5e2",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/isolation: Challenges category id resolved",
+          "path": "::category/isolation: Challenges category id resolved",
+          "id": "41da1a7fbb04f07cf9804db97b7ba814",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::category/challenge: valid Challenges category id is available",
+          "id": "d31398e7c8f73df5fae7e0e03944fc9b",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/challenge: valid Challenges category id is available"
+        },
+        {
+          "name": "category/challenge_upload: status is 200/201",
+          "path": "::category/challenge_upload: status is 200/201",
+          "id": "ed99d75d3864733396fe603d990c9d11",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/challenge_upload: never a 5xx (server did not crash)",
+          "path": "::category/challenge_upload: never a 5xx (server did not crash)",
+          "id": "32da43335e0054c9becb180bba8d274f",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/challenge_upload: response contains image key",
+          "path": "::category/challenge_upload: response contains image key",
+          "id": "56de7e608978d4641a776dd7baf76bdd",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/add_challenge: status is 201",
+          "path": "::category/add_challenge: status is 201",
+          "id": "c500924c11ba6bbc6c5ef654dec28636",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "category/add_challenge: never a 5xx (server did not crash)",
+          "path": "::category/add_challenge: never a 5xx (server did not crash)",
+          "id": "0a7dcd8d05f735b9e9d7673844d797d3",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::category/add_challenge: challenge id returned",
+          "id": "e736bdb4716e7148c3aba36b22080360",
+          "passes": 1,
+          "fails": 0,
+          "name": "category/add_challenge: challenge id returned"
+        },
+        {
+          "name": "category/add_challenge: category association is correct",
+          "path": "::category/add_challenge: category association is correct",
+          "id": "60bdaffbb042f830bc716176c4ad6ac5",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "forum: valid Forum category id is available",
+          "path": "::forum: valid Forum category id is available",
+          "id": "8cddb31675f52431cb2b28deae49e5e9",
+          "passes": 1
+        },
+        {
+          "id": "433e3f52abff0dc5c03e76e92ca117d8",
+          "passes": 1,
+          "fails": 0,
+          "name": "forum/list: status is 200",
+          "path": "::forum/list: status is 200"
+        },
+        {
+          "name": "forum/list: never a 5xx (server did not crash)",
+          "path": "::forum/list: never a 5xx (server did not crash)",
+          "id": "8fedae2c5ac3624eaa781ff3d41aa365",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "forum: forum exists for selected Forum category",
+          "path": "::forum: forum exists for selected Forum category",
+          "id": "c7df5de855c09ba13b3ff49353ccccb3",
+          "passes": 1
+        },
+        {
+          "name": "forum: forum.categoryId matches selected Forum category",
+          "path": "::forum: forum.categoryId matches selected Forum category",
+          "id": "94c5f1563c65a7fda6e9b880f64dcfb8",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::forum/upload_banner: status is 200/201",
+          "id": "7bb35320f7e0b86b4f7fa4d493902044",
+          "passes": 1,
+          "fails": 0,
+          "name": "forum/upload_banner: status is 200/201"
+        },
+        {
+          "name": "forum/upload_banner: never a 5xx (server did not crash)",
+          "path": "::forum/upload_banner: never a 5xx (server did not crash)",
+          "id": "f72bb63c591e8018f1bfe081f7a55436",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "de3c912d1f035aab53f2fb76daf3e83e",
+          "passes": 1,
+          "fails": 0,
+          "name": "forum/upload_banner: response contains banner key",
+          "path": "::forum/upload_banner: response contains banner key"
+        },
+        {
+          "fails": 0,
+          "name": "forum/add_topic: status is 200/201",
+          "path": "::forum/add_topic: status is 200/201",
+          "id": "d75c116675488f09206ffa177cd34f50",
+          "passes": 1
+        },
+        {
+          "path": "::forum/add_topic: never a 5xx (server did not crash)",
+          "id": "fba97f800a6556e684a92dd524c50cd0",
+          "passes": 1,
+          "fails": 0,
+          "name": "forum/add_topic: never a 5xx (server did not crash)"
+        },
+        {
+          "fails": 0,
+          "name": "forum/add_topic: topic id returned",
+          "path": "::forum/add_topic: topic id returned",
+          "id": "315fcfaf880402a18cb50c0fcf4c3722",
+          "passes": 1
+        },
+        {
+          "id": "63bd88ba414ef2cecc5382ea2808659f",
+          "passes": 1,
+          "fails": 0,
+          "name": "forum/list_topics: status is 200",
+          "path": "::forum/list_topics: status is 200"
+        },
+        {
+          "id": "da52ac10e7cd5a87cfc941ce16df4a24",
+          "passes": 1,
+          "fails": 0,
+          "name": "forum/list_topics: never a 5xx (server did not crash)",
+          "path": "::forum/list_topics: never a 5xx (server did not crash)"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "event: valid Events category id is available",
+          "path": "::event: valid Events category id is available",
+          "id": "6d61a865c870e223758995f64a555c61"
+        },
+        {
+          "name": "event/upload: status is 200/201",
+          "path": "::event/upload: status is 200/201",
+          "id": "43eba7e4454f0533529267f5b4b82be6",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::event/upload: never a 5xx (server did not crash)",
+          "id": "2e6703d124d3abbc39619ae37ebc58b0",
+          "passes": 1,
+          "fails": 0,
+          "name": "event/upload: never a 5xx (server did not crash)"
+        },
+        {
+          "name": "event/upload: response contains image key",
+          "path": "::event/upload: response contains image key",
+          "id": "2b24e5f547a532562a1f405c4bf5a4b5",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "event/add_event: status is 201",
+          "path": "::event/add_event: status is 201",
+          "id": "29641f1b17fdccc6e2da1d14f706a349",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "event/add_event: never a 5xx (server did not crash)",
+          "path": "::event/add_event: never a 5xx (server did not crash)",
+          "id": "951b0b255a01fce69dcbc2b020b71ef0",
+          "passes": 1
+        },
+        {
+          "fails": 0,
+          "name": "event/add_event: event id returned",
+          "path": "::event/add_event: event id returned",
+          "id": "78f2e03d8f5e86d1ce08abace39f4e61",
+          "passes": 1
+        },
+        {
+          "name": "event/add_event: response event has non-empty image field",
+          "path": "::event/add_event: response event has non-empty image field",
+          "id": "218021c3d827b1b47c9b1869ef0a8df6",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "event/add_event: stored image key matches uploaded key",
+          "path": "::event/add_event: stored image key matches uploaded key",
+          "id": "131c4ba5c51220672b0abed27131606f",
+          "passes": 1
+        },
+        {
+          "name": "event/list: status is 200",
+          "path": "::event/list: status is 200",
+          "id": "40dfc0b268e749604c787ed1ca42b115",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::event/list: newly created event is retrievable",
+          "id": "090ca0c72a8b3060f734aeed52ea49f6",
+          "passes": 1,
+          "fails": 0,
+          "name": "event/list: newly created event is retrievable"
+        },
+        {
+          "name": "event/list: listed event has a non-empty image field",
+          "path": "::event/list: listed event has a non-empty image field",
+          "id": "ca449d265e579b542de9f76825d58221",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "id": "e513338a3a0f6a7c54f3f5b801d4fb5a",
+          "passes": 1,
+          "fails": 0,
+          "name": "event/list: listed event image matches the uploaded key (no default/broken fallback)",
+          "path": "::event/list: listed event image matches the uploaded key (no default/broken fallback)"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "course: valid Courses category id is available",
+          "path": "::course: valid Courses category id is available",
+          "id": "5d3fc244050187288e48e3e798d7dda2"
+        },
+        {
+          "fails": 0,
+          "name": "course/upload: status is 200/201",
+          "path": "::course/upload: status is 200/201",
+          "id": "5e7c786b95b49d8afb263f99a5476102",
+          "passes": 1
+        },
+        {
+          "name": "course/upload: never a 5xx (server did not crash)",
+          "path": "::course/upload: never a 5xx (server did not crash)",
+          "id": "d8373c3f8434fc81d5d437e39be4b04f",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "course/upload: response contains image key",
+          "path": "::course/upload: response contains image key",
+          "id": "e8a96d61fb10fef71cf05936a92037ac",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "course/add_course: status is 201",
+          "path": "::course/add_course: status is 201",
+          "id": "0e2a3df6cc5d590ed7bcdedbbdf9595e",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "course/add_course: never a 5xx (server did not crash)",
+          "path": "::course/add_course: never a 5xx (server did not crash)",
+          "id": "1b62f752f12e08995b1eaa8e8884b9db",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "course/add_course: course id returned",
+          "path": "::course/add_course: course id returned",
+          "id": "99274363d69a22df9884e75ea116bcb8",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "course/add_course: response course has non-empty imageUrl field",
+          "path": "::course/add_course: response course has non-empty imageUrl field",
+          "id": "db145e6d3e38df127206a40a53570164",
+          "passes": 1
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "course/add_course: stored imageUrl matches uploaded key",
+          "path": "::course/add_course: stored imageUrl matches uploaded key",
+          "id": "0c7c5471e7d61351b923e02bbed5e270"
+        },
+        {
+          "name": "course/list: status is 200",
+          "path": "::course/list: status is 200",
+          "id": "a859b675b16cca0310f4630e09af4479",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "course/list: newly created course is retrievable",
+          "path": "::course/list: newly created course is retrievable",
+          "id": "c7479393f3d9d5a18e4b4249ffae0c19",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "course/list: listed course has a non-empty imageUrl field",
+          "path": "::course/list: listed course has a non-empty imageUrl field",
+          "id": "770302904f68147edbaf39a75bd28e6a",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "course/list: listed course imageUrl matches the uploaded key (no default/broken fallback)",
+          "path": "::course/list: listed course imageUrl matches the uploaded key (no default/broken fallback)",
+          "id": "4a6db83e2254823e4a1a39600f07ad94"
+        },
+        {
+          "name": "create_customer/negative_duplicate_portal_name: status is 400/409",
+          "path": "::create_customer/negative_duplicate_portal_name: status is 400/409",
+          "id": "6e8197485b7a4c536082ae3b3ae0b2e4",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "create_customer/negative_duplicate_portal_name: never a 5xx (server did not crash)",
+          "path": "::create_customer/negative_duplicate_portal_name: never a 5xx (server did not crash)",
+          "id": "75f706687cd391d1815eb40e027540a2",
+          "passes": 1
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "list_customers/verify_after_create: status is 200",
+          "path": "::list_customers/verify_after_create: status is 200",
+          "id": "98fe5b90e37a6f027d0a48ac192d3299"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "list_customers/verify_after_create: success=true",
+          "path": "::list_customers/verify_after_create: success=true",
+          "id": "64dc58f0cb698750f59e403e3efb5b5d"
+        },
+        {
+          "name": "list_customers/verify_after_create: never a 5xx (server did not crash)",
+          "path": "::list_customers/verify_after_create: never a 5xx (server did not crash)",
+          "id": "80ba149d89f4047275715fcbc838535c",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "list_customers/page_zero: never a 5xx (server did not crash)",
+          "path": "::list_customers/page_zero: never a 5xx (server did not crash)",
+          "id": "bd330f3d5897f72248648b8a5482bae0",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "list_customers/limit_zero: never a 5xx (server did not crash)",
+          "path": "::list_customers/limit_zero: never a 5xx (server did not crash)",
+          "id": "9a28e9d80011bfa759fc132411f4d78f",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "list_customers/huge_limit: never a 5xx (server did not crash)",
+          "path": "::list_customers/huge_limit: never a 5xx (server did not crash)",
+          "id": "b51ba41545bedbfc449e8b302cef4e71"
+        },
+        {
+          "path": "::list_customers/negative_page: never a 5xx (server did not crash)",
+          "id": "75a5b8512fd391a5a90a10e3633d643f",
+          "passes": 1,
+          "fails": 0,
+          "name": "list_customers/negative_page: never a 5xx (server did not crash)"
+        },
+        {
+          "passes": 0,
+          "fails": 1,
+          "name": "list_customers/negative_limit: never a 5xx (server did not crash)",
+          "path": "::list_customers/negative_limit: never a 5xx (server did not crash)",
+          "id": "3c149edf5a3f28ff404159b2f67d758f"
+        },
+        {
+          "name": "list_customers/non_numeric: never a 5xx (server did not crash)",
+          "path": "::list_customers/non_numeric: never a 5xx (server did not crash)",
+          "id": "d8ff1c588e6cc77e1c23db4f955f2f96",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "list_customers/search_sql_injection: never a 5xx (server did not crash)",
+          "path": "::list_customers/search_sql_injection: never a 5xx (server did not crash)",
+          "id": "0de10c1fd3b2f9c1734f7952cac3a014",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "list_customers/invalid_boolean: never a 5xx (server did not crash)",
+          "path": "::list_customers/invalid_boolean: never a 5xx (server did not crash)",
+          "id": "e916d85da7cccb83b365157b3be8704e",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "get_customer/unauthenticated: status is 401",
+          "path": "::get_customer/unauthenticated: status is 401",
+          "id": "4779f1eb47e3a47de7fc709c422bfc66",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "get_customer/unauthenticated: never a 5xx (server did not crash)",
+          "path": "::get_customer/unauthenticated: never a 5xx (server did not crash)",
+          "id": "0040cbf83a58b600e44977dffae5e077",
+          "passes": 1
+        },
+        {
+          "fails": 0,
+          "name": "get_customer/tampered_token: status is 401",
+          "path": "::get_customer/tampered_token: status is 401",
+          "id": "ca65c04a40a6c2c2c76a0dc9d8028ab4",
+          "passes": 1
+        },
+        {
+          "name": "get_customer/tampered_token: never a 5xx (server did not crash)",
+          "path": "::get_customer/tampered_token: never a 5xx (server did not crash)",
+          "id": "23f20f8224c671693c49d0e985ccea08",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "get_customer/hardcoded: status is 200",
+          "path": "::get_customer/hardcoded: status is 200",
+          "id": "cec54b3833d84518619115c6c2befbf7",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "get_customer/hardcoded: success=true",
+          "path": "::get_customer/hardcoded: success=true",
+          "id": "87e2d7b14f7a675ec2a81d7b6db24ee2",
+          "passes": 1
+        },
+        {
+          "path": "::get_customer/hardcoded: never a 5xx (server did not crash)",
+          "id": "229c478f8ff2632188f5a73f7c5dc2ce",
+          "passes": 1,
+          "fails": 0,
+          "name": "get_customer/hardcoded: never a 5xx (server did not crash)"
+        },
+        {
+          "name": "theme_settings/adminProfilePicture: has data.customer.themeSettings.adminProfilePicture",
+          "path": "::theme_settings/adminProfilePicture: has data.customer.themeSettings.adminProfilePicture",
+          "id": "049c1e9883db99d2c65cf891b04d0942",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "fails": 0,
+          "name": "theme_settings/bgImage: has data.customer.themeSettings.bgImage",
+          "path": "::theme_settings/bgImage: has data.customer.themeSettings.bgImage",
+          "id": "c73b594374603a831ac988aca4a256a7",
+          "passes": 1
+        },
+        {
+          "id": "aecc0e786c258fd2079c1380a540ca0d",
+          "passes": 1,
+          "fails": 0,
+          "name": "theme_settings/loginPageLogo: has data.customer.themeSettings.loginPageLogo",
+          "path": "::theme_settings/loginPageLogo: has data.customer.themeSettings.loginPageLogo"
+        },
+        {
+          "path": "::theme_settings/sidebarNavigationLogo: has data.customer.themeSettings.sidebarNavigationLogo",
+          "id": "32ec12ce133c769de27de0e41cad623c",
+          "passes": 1,
+          "fails": 0,
+          "name": "theme_settings/sidebarNavigationLogo: has data.customer.themeSettings.sidebarNavigationLogo"
+        },
+        {
+          "name": "theme_settings/favIcon: has data.customer.themeSettings.favIcon",
+          "path": "::theme_settings/favIcon: has data.customer.themeSettings.favIcon",
+          "id": "24c53da2a447b6c59b50532fb99f9c98",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "theme_settings/welcomeImage: has data.customer.themeSettings.welcomeImage",
+          "path": "::theme_settings/welcomeImage: has data.customer.themeSettings.welcomeImage",
+          "id": "de47276d97f4044ba65ae9ac09f71790",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "theme_settings/emailLogo: has data.customer.themeSettings.emailLogo",
+          "path": "::theme_settings/emailLogo: has data.customer.themeSettings.emailLogo",
+          "id": "27b98ebb04966667854aa59be10e9761",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "theme_settings: portal image values are not duplicated across fields",
+          "path": "::theme_settings: portal image values are not duplicated across fields",
+          "id": "6d5af3fdb6ad2b886cf4d9b13ada542e",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "all_tenants/list: status is 200",
+          "path": "::all_tenants/list: status is 200",
+          "id": "1e2e12fec2acf0f49a6b32b4023dc3f5",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "all_tenants/list: never a 5xx (server did not crash)",
+          "path": "::all_tenants/list: never a 5xx (server did not crash)",
+          "id": "7c9acdb50e503aa9ba8476613642c547",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "user_badges/list: status is 200",
+          "path": "::user_badges/list: status is 200",
+          "id": "63d27beeac879e24344411ff21caec6e",
+          "passes": 0,
+          "fails": 1
+        },
+        {
+          "name": "user_badges/list: success=true",
+          "path": "::user_badges/list: success=true",
+          "id": "74324464f2967c6ce3b6c390731e4b6a",
+          "passes": 0,
+          "fails": 1
+        },
+        {
+          "name": "user_badges/list: never a 5xx (server did not crash)",
+          "path": "::user_badges/list: never a 5xx (server did not crash)",
+          "id": "028ed5887bd7216bcceef228dd5914d7",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 0,
+          "fails": 1,
+          "name": "theme_settings/own: status is 200",
+          "path": "::theme_settings/own: status is 200",
+          "id": "617504964048a19ce24d1e06d7684d11"
+        },
+        {
+          "name": "theme_settings/own: success=true",
+          "path": "::theme_settings/own: success=true",
+          "id": "3824045f7fab2d54db061520f4f91592",
+          "passes": 0,
+          "fails": 1
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "theme_settings/own: never a 5xx (server did not crash)",
+          "path": "::theme_settings/own: never a 5xx (server did not crash)",
+          "id": "c5942a27626ce6f64a61b27203e961c1"
+        },
+        {
+          "passes": 0,
+          "fails": 1,
+          "name": "theme_settings/update_hardcoded: status is 200",
+          "path": "::theme_settings/update_hardcoded: status is 200",
+          "id": "76faddb94b9f13f92686300264fe5029"
+        },
+        {
+          "name": "theme_settings/update_hardcoded: success=true",
+          "path": "::theme_settings/update_hardcoded: success=true",
+          "id": "b8575100b82cde635e0e160f167e36b8",
+          "passes": 0,
+          "fails": 1
+        },
+        {
+          "name": "theme_settings/update_hardcoded: never a 5xx (server did not crash)",
+          "path": "::theme_settings/update_hardcoded: never a 5xx (server did not crash)",
+          "id": "c7a044e96ca5347d46800ae276f2fd1e",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "get_customer/nonexistent_id: status is 404",
+          "path": "::get_customer/nonexistent_id: status is 404",
+          "id": "54cb41805f2e429002179a28e6379c0f",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "name": "get_customer/nonexistent_id: never a 5xx (server did not crash)",
+          "path": "::get_customer/nonexistent_id: never a 5xx (server did not crash)",
+          "id": "df4a935904c09d9f5d1a1bf136cc6e93",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "get_customer/malformed_id: status is 400/404",
+          "path": "::get_customer/malformed_id: status is 400/404",
+          "id": "442cdd3ba78255134bb0d7a69542ffab"
+        },
+        {
+          "fails": 0,
+          "name": "get_customer/malformed_id: never a 5xx (server did not crash)",
+          "path": "::get_customer/malformed_id: never a 5xx (server did not crash)",
+          "id": "9b1b6987d50b96bef93f538c67e912dd",
+          "passes": 1
+        },
+        {
+          "fails": 1,
+          "name": "theme_settings/invalid_color: status is 400/422",
+          "path": "::theme_settings/invalid_color: status is 400/422",
+          "id": "bb93bfbafb0268e69278c336629718e0",
+          "passes": 0
+        },
+        {
+          "path": "::theme_settings/invalid_color: never a 5xx (server did not crash)",
+          "id": "39fdd0c591f4f825e1a8eadf2fb830b4",
+          "passes": 1,
+          "fails": 0,
+          "name": "theme_settings/invalid_color: never a 5xx (server did not crash)"
+        },
+        {
+          "id": "f3e353eccad5a5e5cd87da336bf1b175",
+          "passes": 1,
+          "fails": 0,
+          "name": "theme_settings/nonexistent_id: status is 404",
+          "path": "::theme_settings/nonexistent_id: status is 404"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "theme_settings/nonexistent_id: never a 5xx (server did not crash)",
+          "path": "::theme_settings/nonexistent_id: never a 5xx (server did not crash)",
+          "id": "f48f118eb4ad244fdbbd3106a18a27dc"
+        },
+        {
+          "name": "change_status/nonexistent_id: status is 400/404",
+          "path": "::change_status/nonexistent_id: status is 400/404",
+          "id": "c2d75be585ac7c7da556813ab3e02f41",
+          "passes": 1,
+          "fails": 0
+        },
+        {
+          "path": "::change_status/nonexistent_id: never a 5xx (server did not crash)",
+          "id": "72073d2842111c8c48a7fab337feded0",
+          "passes": 1,
+          "fails": 0,
+          "name": "change_status/nonexistent_id: never a 5xx (server did not crash)"
+        },
+        {
+          "passes": 1,
+          "fails": 0,
+          "name": "verify_customer/nonexistent_id: status is 400/404",
+          "path": "::verify_customer/nonexistent_id: status is 400/404",
+          "id": "83919c18b33db85969e56994730c3e78"
+        },
+        {
+          "id": "98e22fb04e8abaccd885dbeda114be1e",
+          "passes": 1,
+          "fails": 0,
+          "name": "verify_customer/nonexistent_id: never a 5xx (server did not crash)",
+          "path": "::verify_customer/nonexistent_id: never a 5xx (server did not crash)"
+        }
+      ],
+    "name": ""
+  },
+  "options": {
+    "noColor": false,
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": ""
+  },
+  "state": {
+    "isStdOutTTY": true,
+    "isStdErrTTY": true,
+    "testRunDurationMs": 106140.2426
+  },
+  "metrics": {
+    "data_received": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 719835,
+        "rate": 6781.92344738432
+      }
+    },
+    "http_req_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 219.0249,
+        "max": 55804.5689,
+        "p(90)": 511.76006000000007,
+        "p(95)": 1175.022339999995,
+        "avg": 874.5606853211002,
+        "min": 134.5321
+      },
+      "thresholds": {
+        "p(95)<2000": {
+          "ok": true
+        }
+      }
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 397.7805,
+        "p(90)": 0,
+        "p(95)": 0,
+        "avg": 3.6493623853211012,
+        "min": 0,
+        "med": 0
+      }
+    },
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 0.009421497214478762,
+        "count": 1
+      }
+    },
+    "vus_max": {
+      "values": {
+        "value": 1,
+        "min": 1,
+        "max": 1
+      },
+      "type": "gauge",
+      "contains": "default"
+    },
+    "checks": {
+      "values": {
+        "rate": 0.9592592592592593,
+        "passes": 259,
+        "fails": 11
+      },
+      "thresholds": {
+        "rate>0.95": {
+          "ok": true
+        }
+      },
+      "type": "rate",
+      "contains": "default"
+    },
+    "http_req_duration{endpoint:create_customer}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 176.734,
+        "max": 4556.0924,
+        "p(90)": 1945.9592600000017,
+        "p(95)": 3251.0258299999973,
+        "avg": 805.1680285714286,
+        "min": 170.4007
+      },
+      "thresholds": {
+        "p(95)<3000": {
+          "ok": false
+        }
+      }
+    },
+    "http_req_sending": {
+      "contains": "time",
+      "values": {
+        "p(95)": 1.9796399999999994,
+        "avg": 20.268787155963295,
+        "min": 0,
+        "med": 0.5258,
+        "max": 2146.1293,
+        "p(90)": 1.5125200000000003
+      },
+      "type": "trend"
+    },
+    "iteration_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 106134.3408,
+        "min": 106134.3408,
+        "med": 106134.3408,
+        "max": 106134.3408,
+        "p(90)": 106134.3408,
+        "p(95)": 106134.3408
+      }
+    },
+    "vus": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "value": 1,
+        "min": 1,
+        "max": 1
+      }
+    },
+    "http_req_duration{expected_response:true}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 55804.5689,
+        "p(90)": 541.6788200000001,
+        "p(95)": 1175.022339999995,
+        "avg": 990.4707247191008,
+        "min": 134.5321,
+        "med": 231.6617
+      }
+    },
+    "http_req_blocked": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 0,
+        "avg": 5.801573394495413,
+        "min": 0,
+        "med": 0,
+        "max": 632.3715,
+        "p(90)": 0
+      }
+    },
+    "http_req_waiting": {
+      "values": {
+        "avg": 828.9504532110094,
+        "min": 134.5321,
+        "med": 217.5267,
+        "max": 55803.9797,
+        "p(90)": 487.39792000000006,
+        "p(95)": 615.0203
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "data_sent": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 8465971,
+        "rate": 79762.12219435799
+      }
+    },
+    "http_req_failed": {
+      "contains": "default",
+      "values": {
+        "rate": 0.1834862385321101,
+        "passes": 20,
+        "fails": 89
+      },
+      "thresholds": {
+        "rate<0.05": {
+          "ok": false
+        }
+      },
+      "type": "rate"
+    },
+    "http_req_duration{endpoint:login}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 522.38263,
+        "p(95)": 592.6952649999998,
+        "avg": 314.83817,
+        "min": 134.5321,
+        "med": 199.12630000000001,
+        "max": 663.0079
+      },
+      "thresholds": {
+        "p(95)<1500": {
+          "ok": true
+        }
+      }
+    },
+    "http_req_duration{endpoint:file_upload}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 574.4635,
+        "min": 191.085,
+        "med": 208.08069999999998,
+        "max": 3761.7936,
+        "p(90)": 633.1265699999988,
+        "p(95)": 2197.460084999996
+      },
+      "thresholds": {
+        "p(95)<3000": {
+          "ok": true
+        }
+      }
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 109,
+        "rate": 1.026943196378185
+      }
+    },
+    "http_req_connecting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 1.5524513761467889,
+        "min": 0,
+        "med": 0,
+        "max": 169.2172,
+        "p(90)": 0,
+        "p(95)": 0
+      }
+    },
+    "http_req_receiving": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 0,
+        "med": 0,
+        "max": 1622.757,
+        "p(90)": 1.5932000000000008,
+        "p(95)": 6.200979999999984,
+        "avg": 25.341444954128445
+      }
+    }
+  }
+}

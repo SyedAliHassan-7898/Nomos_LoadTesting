@@ -1,0 +1,13 @@
+{
+  "name": "nomos-superadmin-loadtest",
+  "version": "1.0.0",
+  "private": true,
+  "description": "k6 load testing suite for the Nomos Super Admin portal (auth, client onboarding, client management)",
+  "scripts": {
+    "smoke": "k6 run -e PROFILE=smoke --summary-export=reports/summary-smoke.json main.js",
+    "load": "k6 run -e PROFILE=load --summary-export=reports/summary-load.json main.js",
+    "stress": "k6 run -e PROFILE=stress --summary-export=reports/summary-stress.json main.js",
+    "spike": "k6 run -e PROFILE=spike --summary-export=reports/summary-spike.json main.js",
+    "soak": "k6 run -e PROFILE=soak -e DURATION=30m --summary-export=reports/summary-soak.json main.js"
+  }
+}
