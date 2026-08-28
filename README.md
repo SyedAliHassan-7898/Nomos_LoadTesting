@@ -1,4 +1,4 @@
-# Nomos Super Admin — k6 Load Testing Suite (Fixed)
+# Nomos Super Admin — k6 Load Testing Suite
 
 This version hardens the load-test implementation around the failures found in the supplied 27-Aug-2026 run. It does **not** pretend to fix server-side defects that cannot be changed from a k6 client.
 
