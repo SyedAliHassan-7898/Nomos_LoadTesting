@@ -64,6 +64,13 @@ const CATEGORY_GET_ALL_PATH = (moduleId) => `/api/category/get-all?moduleId=${mo
 const CATEGORY_ADD_PATH = (moduleId) => `/api/category/add/${moduleId}`;
 const CHALLENGE_UPLOAD_PATH = '/api/files-upload/event';
 const CHALLENGE_ADD_PATH = '/api/admin/challenges/admin/add-challenge';
+// HAR-verified (script_admin-reward_Challenges_more-dev_weuno_co.har): before an admin ever
+// attaches a reward to a challenge, the real UI creates the reward itself first (its own image
+// upload + provider record), then lists it back. We reproduce that same reward-first sequence.
+const REWARD_PROVIDERS_LIST_PATH = '/api/admin/rewards/provider/get-all?page=1&limit=10';
+const REWARD_UPLOAD_PATH = '/api/files-upload/rewards';
+const REWARD_ADD_PATH = '/api/admin/rewards/add-rewards';
+const REWARD_LIST_PATH = '/api/admin/rewards/get-all?page=1&limit=10';
 const FORUM_UPLOAD_PATH = '/api/files-upload/topic';
 const FORUM_LIST_PATH = '/api/forums/get-all?page=1&limit=10';
 const FORUM_TOPIC_ADD_PATH = (forumId) => `/api/topic/add-topic/${forumId}`;
@@ -77,6 +84,21 @@ const EVENT_ADD_PATH = (categoryId) => `/api/events/add-event/${categoryId}`;
 const COURSE_UPLOAD_PATH = '/api/files-upload/course';
 const COURSE_ADD_PATH = (categoryId) => `/api/course/add-course/${categoryId}`;
 const COURSE_LIST_PATH = '/api/course/get-all-courses?page=1&limit=12';
+// HAR-verified (script_admin-course_creation_more-dev_weuno_co.har): the real admin UI does not
+// stop at creating the course record — it drills into the course, adds a content module, adds a
+// lesson under that module, then attaches a quiz + quiz question to the lesson. These paths/flow
+// reproduce that exact sequence.
+const COURSE_GET_BY_ID_PATH = (courseId) => `/api/course/get-by-id/${courseId}`;
+const COURSE_MATERIALS_PATH = (id, attachableType) => `/api/course-materials/get-all-course-materials/${id}?attachableType=${attachableType}`;
+const COURSE_CONTENTS_LIST_PATH = (courseId) => `/api/courses-contents/get-all-material-with-id/${courseId}?page=1&limit=10`;
+const COURSE_MODULE_UPLOAD_PATH = '/api/files-upload/courseModule';
+const COURSE_CONTENT_ADD_PATH = (courseId) => `/api/courses-contents/add-course-content/${courseId}`;
+const COURSE_LESSON_THUMB_UPLOAD_PATH = '/api/files-upload/courseLessonThumbnail';
+const COURSE_LESSON_CREATE_PATH = (courseContentId) => `/api/courses-lessons/create-lessons/${courseContentId}`;
+const COURSE_LESSONS_LIST_PATH = (courseContentId) => `/api/courses-lessons/get-all-lessons/${courseContentId}?page=1&limit=10`;
+const QUIZ_CREATE_PATH = (contextId) => `/api/admin/quiz/create-quiz-with-identifier?contextId=${contextId}`;
+const QUIZ_QUESTION_CREATE_PATH = (quizId) => `/api/admin/quiz-questions/create-question-with-options/${quizId}`;
+const QUIZ_LIST_PATH = '/api/admin/quiz/get-all-quizzes?page=1&limit=10';
 const EVENT_LIST_PATH = '/api/events/search-with-filter?page=1&limit=12&isActive=true';
 // Fallback IDs are only used if the module endpoint cannot be parsed. The
 // preferred path is always to resolve IDs by module name from the API.
@@ -109,6 +131,7 @@ const ASSET_BINS = {
   invalidType: open(`../${ENV.ASSETS.invalidType}`, 'b'),
   oversized: open(`../${ENV.ASSETS.oversized}`, 'b'),
   feedImage: open(`../${ENV.ASSETS.feedImage}`, 'b'),
+  courseModuleThumb: open(`../${ENV.ASSETS.courseModuleThumb}`, 'b'),
 };
 
 /** Builds a fresh multipart form from a pre-loaded (init-stage) binary. Safe to call at any point during a VU iteration. */
@@ -268,6 +291,7 @@ function ensureCategory(token, moduleIds, moduleName, name, description, isShare
     const created = findCategoryByName(createBody, name);
     if (created) {
       assertCategoryModule(created, moduleName, moduleId, `category/${moduleName.toLowerCase()}/created`);
+      console.log(`[Category Flow] ${moduleName} category created successfully: '${created.name}' (id: ${created.id})`);
       return created.id;
     }
   }
@@ -291,6 +315,7 @@ function ensureCategory(token, moduleIds, moduleName, name, description, isShare
   const verified = findCategoryByName(verifyBody, name);
   if (verified) {
     assertCategoryModule(verified, moduleName, moduleId, `category/${moduleName.toLowerCase()}/verified`);
+    console.log(`[Category Flow] ${moduleName} category created successfully (verified after 409): '${verified.name}' (id: ${verified.id})`);
     return verified.id;
   }
 
@@ -298,7 +323,104 @@ function ensureCategory(token, moduleIds, moduleName, name, description, isShare
   return '';
 }
 
-function createChallengeFlow(token, categoryId, vu, iter) {
+/**
+ * Real Reward creation (HAR-verified: script_admin-reward_Challenges_more-dev_weuno_co.har).
+ * The real admin UI always creates the reward record — with a proper provider name, contact
+ * email, redemption terms, and its own uploaded image — before a challenge ever references a
+ * reward. This reproduces that exact sequence with realistic, non-placeholder data instead of
+ * throwaway text like "Automated Test" / "vfdvdf" seen in the manual HAR capture.
+ */
+function createRewardFlow(token, vu, iter) {
+  const suffix = `${vu}-${iter}-${Date.now()}`;
+
+  console.log('[Reward Flow] Fetching reward providers...');
+  const providersRes = apiGet(REWARD_PROVIDERS_LIST_PATH, token, {
+    tags: { endpoint: 'get_reward_providers', scenario: 'tenant_admin' },
+  });
+  console.log(`[Reward Flow] Reward providers list status: ${providersRes.status}`);
+  expectStatus(providersRes, [200], 'reward/providers_list');
+  expectNeverServerError(providersRes, 'reward/providers_list');
+
+  console.log('[Reward Flow] Uploading reward image...');
+  const uploadRes = apiPost(REWARD_UPLOAD_PATH, buildMultipart('bg', 'bg4.jpg'), null, {
+    isMultipart: true,
+    params: { headers: getTenantHeaders(token, ENV.CLIENT_PORTAL_ORIGIN, true) },
+    tags: { endpoint: 'reward_file_upload', scenario: 'tenant_admin' },
+  });
+  console.log(`[Reward Flow] Reward image upload status: ${uploadRes.status}`);
+  expectStatus(uploadRes, [200, 201], 'reward/upload');
+  expectNeverServerError(uploadRes, 'reward/upload');
+  const uploadBody = safeJson(uploadRes);
+  const imageKey = (uploadBody && Array.isArray(uploadBody.files) && uploadBody.files[0]) ||
+    (uploadBody && uploadBody.data && Array.isArray(uploadBody.data.files) && uploadBody.data.files[0]) || '';
+  expectCondition(Boolean(imageKey), 'reward/upload: response contains image key');
+  if (!imageKey) {
+    console.log('[Reward Flow] Aborting reward creation: no image key from upload.');
+    return null;
+  }
+
+  // Real-looking reward, not manual-test placeholder text: a proper provider name, a
+  // real-format contact email/link, genuine redemption copy, and a 30-day validity window
+  // computed off "now" rather than a hardcoded HAR-capture date.
+  const validUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+  const rewardTitle = `Course Completion Bonus Points ${suffix}`;
+  const payload = {
+    isActive: true,
+    isPublic: true,
+    providerType: 'INTERNAL',
+    isManualMode: true,
+    rewardType: 'Points Based',
+    points: 50,
+    providerLink: 'https://www.nomos-tech.com',
+    providerName: 'Nomos Rewards Team',
+    howToRedeem: '<p>Enter this code at checkout on the client portal to redeem your reward.</p>',
+    description: 'Earn bonus loyalty points for completing your first course on the platform.',
+    validUntil,
+    termsAndConditions: '<p>Valid for 30 days from the issue date. Limited to one redemption per member.</p>',
+    code: `REWARD-${suffix}`.slice(0, 40),
+    discount: '15',
+    providerEmail: `rewards.${suffix}@yopmail.com`,
+    title: rewardTitle,
+    image: imageKey,
+  };
+
+  console.log(`[Reward Flow] Creating reward: "${rewardTitle}"...`);
+  const rewardRes = apiPost(REWARD_ADD_PATH, payload, token, {
+    tags: { endpoint: 'add_reward', scenario: 'tenant_admin' },
+    expectedStatuses: [201, 400],
+  });
+  console.log(`[Reward Flow] Add reward status: ${rewardRes.status}`);
+  if (rewardRes.status >= 400) console.log(`[Reward Flow] Add reward failed: ${rewardRes.body}`);
+  expectStatus(rewardRes, [201], 'reward/add');
+  expectNeverServerError(rewardRes, 'reward/add');
+  if (rewardRes.status !== 201) return null;
+
+  const created = safeJson(rewardRes);
+  const reward = created && created.data && created.data.reward;
+  expectCondition(Boolean(reward && reward.id), 'reward/add: reward id returned');
+  expectCondition(Boolean(reward && reward.provider && reward.provider.id), 'reward/add: provider record created');
+  if (reward) {
+    expectCondition(reward.title === rewardTitle, 'reward/add: stored title matches submitted title');
+    expectCondition(reward.image === imageKey, 'reward/add: stored image matches uploaded key');
+  }
+
+  console.log('[Reward Flow] Verifying reward appears in rewards list...');
+  const listRes = apiGet(REWARD_LIST_PATH, token, {
+    tags: { endpoint: 'get_rewards', scenario: 'tenant_admin' },
+  });
+  expectStatus(listRes, [200], 'reward/list');
+  const listRoot = unwrapData(safeJson(listRes)) || {};
+  const rows = (listRoot.rewards && Array.isArray(listRoot.rewards.reward)) ? listRoot.rewards.reward : [];
+  const found = rows.find((row) => row && row.id === (reward && reward.id));
+  expectCondition(Boolean(found), 'reward/list: newly created reward is retrievable');
+  if (found) {
+    console.log(`[Reward Flow] Reward created and verified: "${found.title}" (provider: ${found.provider && found.provider.providerName}, code: ${found.code}, points: ${found.points})`);
+  }
+
+  return reward;
+}
+
+function createChallengeFlow(token, categoryId, reward, vu, iter) {
   expectCondition(Boolean(categoryId), 'category/challenge: valid Challenges category id is available');
   if (!categoryId) return;
 
@@ -317,23 +439,24 @@ function createChallengeFlow(token, categoryId, vu, iter) {
   expectCondition(Boolean(imageKey), 'category/challenge_upload: response contains image key');
 
   const suffix = `${vu}-${iter}-${Date.now()}`;
-  // IMPORTANT: rewards/resources/judges must be empty arrays when there are no
-  // entries. Never send placeholder objects with empty labels or numeric reward
-  // values; the API DTO rejects those shapes (observed 400 in the supplied run).
+  const rewardPoints = 10;
+  // HAR-verified (script_admin-reward_Challenges_more-dev_weuno_co.har): the working payload
+  // DOES send a non-empty "rewards" array — the correct shape is [{ type: "points", value: "<n>" }],
+  // matching rewardPoints as a string. Resources/judges stay empty arrays when unused, and
+  // "milestones" must be present (even empty) — it is part of the real DTO the front-end sends.
   const payload = {
-    title: `Script Challenge ${suffix}`,
-    difficulty: 'easy',
-    description: '<h3>Create Challenge</h3><p><br></p>',
-    image: imageKey || 'event/default.png',
-    rewards: [],
+    milestones: [],
     resources: [],
-    rewardPoints: 10,
-    participantLimit: 5,
-    deadline: null,
     judges: [],
-    status: 'published',
-    isActive: true,
+    rewards: [{ type: 'points', value: String(rewardPoints) }],
+    image: imageKey || 'event/default.png',
+    participantLimit: 25,
+    rewardPoints,
+    difficulty: 'easy',
+    description: '<p>Complete this challenge to test your skills and earn bonus loyalty points.</p>',
     categoryId,
+    title: `Script Challenge ${suffix}`,
+    status: 'published',
   };
 
   console.log(`[Category Flow] Creating challenge: "${payload.title}"...`);
@@ -352,6 +475,8 @@ function createChallengeFlow(token, categoryId, vu, iter) {
     expectCondition(Boolean(challenge && challenge.id), 'category/add_challenge: challenge id returned');
     if (challenge) {
       expectCondition(challenge.category && challenge.category.id === categoryId, 'category/add_challenge: category association is correct');
+      expectCondition(Array.isArray(challenge.rewards) && challenge.rewards.length > 0, 'category/add_challenge: challenge stored the points reward');
+      console.log(`[Category Flow] Challenge created: "${challenge.title}" (id: ${challenge.id}, category: ${challenge.category && challenge.category.name}${reward ? `, reward on file: "${reward.title}"` : ''})`);
     }
   }
 }
@@ -588,6 +713,269 @@ function createCourseFlow(token, categoryId, vu, iter) {
     expectCondition(Boolean(found.imageUrl), 'course/list: listed course has a non-empty imageUrl field');
     expectCondition(found.imageUrl === imageKey, 'course/list: listed course imageUrl matches the uploaded key (no default/broken fallback)');
   }
+
+  // HAR-verified: the real admin doesn't stop after creating the course card — it opens the
+  // course and builds out a module -> lesson -> quiz -> quiz question underneath it.
+  createCourseContentFlow(token, course.id, vu, iter);
+}
+
+/**
+ * Real course-content (module), lesson, quiz, and quiz-question creation,
+ * reproducing script_admin-course_creation_more-dev_weuno_co.har end to end:
+ *   GET  /api/course/get-by-id/{courseId}
+ *   GET  /api/courses-contents/get-all-material-with-id/{courseId}   (starts empty)
+ *   POST /api/files-upload/courseModule
+ *   POST /api/courses-contents/add-course-content/{courseId}
+ *   GET  /api/course/get-by-id/{courseId}                            (re-fetch, verify)
+ *   GET  /api/courses-contents/get-all-material-with-id/{courseId}   (module now present)
+ *   POST /api/files-upload/courseLessonThumbnail
+ *   POST /api/courses-lessons/create-lessons/{courseContentId}
+ *   POST /api/admin/quiz/create-quiz-with-identifier?contextId={lessonId}
+ *   POST /api/admin/quiz-questions/create-question-with-options/{quizId}
+ *   GET  /api/courses-lessons/get-all-lessons/{courseContentId}      (lesson + quiz present)
+ *   GET  /api/course-materials/get-all-course-materials/{courseContentId}?attachableType=MODULE
+ *   GET  /api/course-materials/get-all-course-materials/{lessonId}?attachableType=LESSON
+ */
+function createCourseContentFlow(token, courseId, vu, iter) {
+  expectCondition(Boolean(courseId), 'course_content: valid course id is available');
+  if (!courseId) return;
+
+  const headers = getTenantHeaders(token, ENV.CLIENT_PORTAL_ORIGIN);
+  const suffix = `${vu}-${iter}-${Date.now()}`;
+
+  console.log('[Course Flow] Fetching course details before adding a module...');
+  const detailRes = apiGet(COURSE_GET_BY_ID_PATH(courseId), null, {
+    params: { headers },
+    tags: { endpoint: 'get_course_by_id', scenario: 'tenant_admin' },
+  });
+  expectStatus(detailRes, [200], 'course/get_by_id');
+  const detailBody = safeJson(detailRes);
+  const fetchedCourse = detailBody && detailBody.data && detailBody.data.course && detailBody.data.course.filterCourse;
+  expectCondition(Boolean(fetchedCourse && fetchedCourse.id === courseId), 'course/get_by_id: returns the course just created');
+
+  console.log('[Course Flow] Fetching course content modules (expect none yet)...');
+  const contentsInitialRes = apiGet(COURSE_CONTENTS_LIST_PATH(courseId), null, {
+    params: { headers },
+    tags: { endpoint: 'get_course_contents', scenario: 'tenant_admin' },
+  });
+  expectStatus(contentsInitialRes, [200], 'course_content/list_initial');
+  const contentsInitialBody = safeJson(contentsInitialRes);
+  const contentsInitialRoot = unwrapData(contentsInitialBody) || {};
+  expectCondition(Array.isArray(contentsInitialRoot.courseContent), 'course_content/list_initial: courseContent is an array');
+
+  console.log('[Course Flow] Uploading course module thumbnail...');
+  const moduleUploadRes = apiPost(COURSE_MODULE_UPLOAD_PATH, buildMultipart('courseModuleThumb', 'new1.jpg'), null, {
+    isMultipart: true,
+    params: { headers: getTenantHeaders(token, ENV.CLIENT_PORTAL_ORIGIN, true) },
+    tags: { endpoint: 'course_module_file_upload', scenario: 'tenant_admin' },
+  });
+  console.log(`[Course Flow] Course module thumbnail upload status: ${moduleUploadRes.status}`);
+  expectStatus(moduleUploadRes, [200, 201], 'course_content/upload');
+  expectNeverServerError(moduleUploadRes, 'course_content/upload');
+  const moduleUploadBody = safeJson(moduleUploadRes);
+  const moduleThumbKey = (moduleUploadBody && Array.isArray(moduleUploadBody.files) && moduleUploadBody.files[0]) ||
+    (moduleUploadBody && moduleUploadBody.data && Array.isArray(moduleUploadBody.data.files) && moduleUploadBody.data.files[0]) || '';
+  expectCondition(Boolean(moduleThumbKey), 'course_content/upload: response contains thumbnail key');
+  if (!moduleThumbKey) {
+    console.log('[Course Flow] Aborting module/lesson/quiz creation: no thumbnail key from upload.');
+    return;
+  }
+
+  const contentPayload = {
+    title: `Module 1 - Getting Started ${suffix}`,
+    thumbnail: moduleThumbKey,
+    description: '<p>Introduction module covering the fundamentals of the course.</p>',
+    isActive: true,
+    duration: '3 month',
+    resources: [],
+  };
+
+  console.log(`[Course Flow] Creating course content: "${contentPayload.title}"...`);
+  const contentRes = apiPost(COURSE_CONTENT_ADD_PATH(courseId), contentPayload, null, {
+    params: { headers },
+    tags: { endpoint: 'add_course_content', scenario: 'tenant_admin' },
+    expectedStatuses: [201, 400],
+  });
+  console.log(`[Course Flow] Add course content status: ${contentRes.status}`);
+  if (contentRes.status >= 400) console.log(`[Course Flow] Add course content failed: ${contentRes.body}`);
+  expectStatus(contentRes, [201], 'course_content/add');
+  expectNeverServerError(contentRes, 'course_content/add');
+  if (contentRes.status !== 201) return;
+
+  const contentCreated = safeJson(contentRes);
+  const courseContent = contentCreated && contentCreated.data && contentCreated.data.courseContent;
+  expectCondition(Boolean(courseContent && courseContent.id), 'course_content/add: course content id returned');
+  expectCondition(Boolean(courseContent && courseContent.thumbnail), 'course_content/add: response has non-empty thumbnail field');
+  if (courseContent) {
+    expectCondition(courseContent.thumbnail === moduleThumbKey, 'course_content/add: stored thumbnail matches uploaded key');
+  }
+  const courseContentId = courseContent && courseContent.id;
+
+  console.log('[Course Flow] Re-fetching course details after module creation...');
+  const detailRes2 = apiGet(COURSE_GET_BY_ID_PATH(courseId), null, {
+    params: { headers },
+    tags: { endpoint: 'get_course_by_id', scenario: 'tenant_admin' },
+  });
+  expectStatus(detailRes2, [200], 'course/get_by_id_after_module');
+
+  console.log('[Course Flow] Verifying module now appears in course content list...');
+  const contentsRes2 = apiGet(COURSE_CONTENTS_LIST_PATH(courseId), null, {
+    params: { headers },
+    tags: { endpoint: 'get_course_contents', scenario: 'tenant_admin' },
+  });
+  expectStatus(contentsRes2, [200], 'course_content/list_after_add');
+  const contentsRoot2 = unwrapData(safeJson(contentsRes2)) || {};
+  const contentRows = Array.isArray(contentsRoot2.courseContent) ? contentsRoot2.courseContent : [];
+  const foundContent = contentRows.find((row) => row && row.id === courseContentId);
+  expectCondition(Boolean(foundContent), 'course_content/list_after_add: newly created module is retrievable');
+
+  if (!courseContentId) return;
+
+  console.log('[Course Flow] Uploading lesson thumbnail...');
+  const lessonUploadRes = apiPost(COURSE_LESSON_THUMB_UPLOAD_PATH, buildMultipart('feedImage', 'new.jpg'), null, {
+    isMultipart: true,
+    params: { headers: getTenantHeaders(token, ENV.CLIENT_PORTAL_ORIGIN, true) },
+    tags: { endpoint: 'course_lesson_file_upload', scenario: 'tenant_admin' },
+  });
+  console.log(`[Course Flow] Lesson thumbnail upload status: ${lessonUploadRes.status}`);
+  expectStatus(lessonUploadRes, [200, 201], 'course_lesson/upload');
+  expectNeverServerError(lessonUploadRes, 'course_lesson/upload');
+  const lessonUploadBody = safeJson(lessonUploadRes);
+  const lessonThumbKey = (lessonUploadBody && Array.isArray(lessonUploadBody.files) && lessonUploadBody.files[0]) ||
+    (lessonUploadBody && lessonUploadBody.data && Array.isArray(lessonUploadBody.data.files) && lessonUploadBody.data.files[0]) || '';
+  expectCondition(Boolean(lessonThumbKey), 'course_lesson/upload: response contains thumbnail key');
+  if (!lessonThumbKey) {
+    console.log('[Course Flow] Aborting lesson/quiz creation: no thumbnail key from upload.');
+    return;
+  }
+
+  const lessonTitle = `Lesson 1 - Course Overview ${suffix}`;
+  const lessonPayload = {
+    description: '<p>An overview of what this course covers and how to get the most out of it.</p>',
+    title: lessonTitle,
+    resourceUrl: '',
+    thumbnailUrl: lessonThumbKey,
+  };
+
+  console.log(`[Course Flow] Creating lesson: "${lessonTitle}"...`);
+  const lessonRes = apiPost(COURSE_LESSON_CREATE_PATH(courseContentId), lessonPayload, null, {
+    params: { headers },
+    tags: { endpoint: 'create_lesson', scenario: 'tenant_admin' },
+    expectedStatuses: [201, 400],
+  });
+  console.log(`[Course Flow] Create lesson status: ${lessonRes.status}`);
+  if (lessonRes.status >= 400) console.log(`[Course Flow] Create lesson failed: ${lessonRes.body}`);
+  expectStatus(lessonRes, [201], 'course_lesson/create');
+  expectNeverServerError(lessonRes, 'course_lesson/create');
+  if (lessonRes.status !== 201) return;
+
+  const lessonCreated = safeJson(lessonRes);
+  const lesson = lessonCreated && lessonCreated.data && lessonCreated.data.courseLesson;
+  expectCondition(Boolean(lesson && lesson.id), 'course_lesson/create: lesson id returned');
+  expectCondition(Boolean(lesson && lesson.thumbnailUrl), 'course_lesson/create: response has non-empty thumbnailUrl field');
+  if (lesson) {
+    expectCondition(lesson.thumbnailUrl === lessonThumbKey, 'course_lesson/create: stored thumbnailUrl matches uploaded key');
+  }
+  const lessonId = lesson && lesson.id;
+  if (!lessonId) return;
+
+  const quizPayload = {
+    title: lessonTitle,
+    description: '',
+    contextType: 'LESSON',
+  };
+
+  console.log(`[Course Flow] Creating quiz for lesson: "${lessonTitle}"...`);
+  const quizRes = apiPost(QUIZ_CREATE_PATH(lessonId), quizPayload, null, {
+    params: { headers },
+    tags: { endpoint: 'create_quiz', scenario: 'tenant_admin' },
+    expectedStatuses: [201, 400],
+  });
+  console.log(`[Course Flow] Create quiz status: ${quizRes.status}`);
+  if (quizRes.status >= 400) console.log(`[Course Flow] Create quiz failed: ${quizRes.body}`);
+  expectStatus(quizRes, [201], 'quiz/create');
+  expectNeverServerError(quizRes, 'quiz/create');
+  if (quizRes.status !== 201) return;
+
+  const quizCreated = safeJson(quizRes);
+  const quiz = quizCreated && quizCreated.data;
+  expectCondition(Boolean(quiz && quiz.id), 'quiz/create: quiz id returned');
+  const quizId = quiz && quiz.id;
+  if (!quizId) return;
+
+  const questionPayload = {
+    toCreate: [
+      {
+        questionText: 'Did this lesson clearly explain the course objectives?',
+        questionType: 'MULTIPLE_CHOICE',
+        isRequired: true,
+        options: [
+          { optionText: 'Yes', isCorrect: true },
+          { optionText: 'No', isCorrect: false },
+        ],
+        scaleMinLabel: '',
+        scaleMin: 1,
+        scaleMaxLabel: '',
+        scaleMax: 5,
+        maxRating: 5,
+        sequence: 1,
+      },
+    ],
+    toUpdate: [],
+    questionIdsToDelete: [],
+  };
+
+  console.log('[Course Flow] Adding quiz question...');
+  const questionRes = apiPost(QUIZ_QUESTION_CREATE_PATH(quizId), questionPayload, null, {
+    params: { headers },
+    tags: { endpoint: 'create_quiz_question', scenario: 'tenant_admin' },
+    expectedStatuses: [201, 400],
+  });
+  console.log(`[Course Flow] Add quiz question status: ${questionRes.status}`);
+  if (questionRes.status >= 400) console.log(`[Course Flow] Add quiz question failed: ${questionRes.body}`);
+  expectStatus(questionRes, [201], 'quiz_question/create');
+  expectNeverServerError(questionRes, 'quiz_question/create');
+  expectSuccessTrue(questionRes, 'quiz_question/create');
+
+  console.log('[Course Flow] Verifying lesson (with quiz) appears in lessons list...');
+  const lessonsListRes = apiGet(COURSE_LESSONS_LIST_PATH(courseContentId), null, {
+    params: { headers },
+    tags: { endpoint: 'get_course_lessons', scenario: 'tenant_admin' },
+  });
+  expectStatus(lessonsListRes, [200], 'course_lesson/list');
+  const lessonsRoot = unwrapData(safeJson(lessonsListRes)) || {};
+  const lessonRows = (lessonsRoot.courseLessons && Array.isArray(lessonsRoot.courseLessons.courseLesson))
+    ? lessonsRoot.courseLessons.courseLesson
+    : [];
+  const foundLesson = lessonRows.find((row) => row && row.id === lessonId);
+  expectCondition(Boolean(foundLesson), 'course_lesson/list: newly created lesson is retrievable');
+  if (foundLesson) {
+    const foundQuiz = Array.isArray(foundLesson.quizzes) && foundLesson.quizzes.find((q) => q && q.id === quizId);
+    expectCondition(Boolean(foundQuiz), 'course_lesson/list: lesson has the quiz attached');
+  }
+
+  console.log('[Course Flow] Verifying module/lesson materials endpoints respond cleanly...');
+  const moduleMaterialsRes = apiGet(COURSE_MATERIALS_PATH(courseContentId, 'MODULE'), null, {
+    params: { headers },
+    tags: { endpoint: 'get_course_materials', scenario: 'tenant_admin' },
+  });
+  expectStatus(moduleMaterialsRes, [200], 'course_materials/module');
+
+  const lessonMaterialsRes = apiGet(COURSE_MATERIALS_PATH(lessonId, 'LESSON'), null, {
+    params: { headers },
+    tags: { endpoint: 'get_course_materials', scenario: 'tenant_admin' },
+  });
+  expectStatus(lessonMaterialsRes, [200], 'course_materials/lesson');
+
+  console.log('[Course Flow] Verifying quiz appears in tenant quiz list...');
+  const quizListRes = apiGet(QUIZ_LIST_PATH, null, {
+    params: { headers },
+    tags: { endpoint: 'get_quizzes', scenario: 'tenant_admin' },
+  });
+  expectStatus(quizListRes, [200], 'quiz/list');
+  const quizListRoot = unwrapData(safeJson(quizListRes)) || {};
+  const quizRows = Array.isArray(quizListRoot.quizzes) ? quizListRoot.quizzes : [];
+  expectCondition(quizRows.some((row) => row && row.id === quizId), 'quiz/list: newly created quiz is retrievable');
 }
 
 function runCategoryAdminFlow(token, vu = 0, iter = 0) {
@@ -644,7 +1032,8 @@ function runCategoryAdminFlow(token, vu = 0, iter = 0) {
     ['Challenges', challengesCategoryId],
   ].forEach(([name, id]) => expectCondition(Boolean(id), `category/isolation: ${name} category id resolved`));
 
-  createChallengeFlow(token, challengesCategoryId, vu, iter);
+  const createdReward = createRewardFlow(token, vu, iter);
+  createChallengeFlow(token, challengesCategoryId, createdReward, vu, iter);
   createForumFlow(token, forumCategoryId);
   createEventFlow(token, eventsCategoryId, vu, iter);
   createCourseFlow(token, coursesCategoryId, vu, iter);
