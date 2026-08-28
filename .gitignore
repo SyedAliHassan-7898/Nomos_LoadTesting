@@ -1,5 +1,20 @@
-summary*.json
+# Dependencies
 node_modules/
-*.log
+.pnpm-store/
+
+# Environment and sensitive data
 environment.js
+.env
+.env.*
+
+# Reports & Test Output
+reports/*.csv
+reports/*.json
+!reports/.gitkeep
+summary*.json
 *.reports/
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
