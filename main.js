@@ -21,7 +21,7 @@
  */
 import { ENV } from './config/environment.js';
 import { runAuthScenario } from './scenarios/auth.scenario.js';
-import { runClientCreationScenario } from './scenarios/client-creation.scenario.js';
+import { runClientCreationScenario } from './scenarios/client-creation.flow.js';
 import { runClientManagementScenario } from './scenarios/client-management.scenario.js';
 import { buildReportRows, toCsv, metricValue, round } from './lib/report-utils.js';
 

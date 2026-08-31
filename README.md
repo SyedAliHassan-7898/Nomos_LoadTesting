@@ -34,6 +34,16 @@ The supplied run still demonstrates server-side defects that this client-side te
   [releases page](https://github.com/grafana/k6/releases))
 - Network access to `https://api.nomos-dev.weuno.co`
 
+## Environment
+
+Keep secrets in `.env`. Copy `.env.example` to `.env` and fill only the credential values you want to override locally.
+
+The test suite still uses the same defaults for URLs, assets, thresholds, and profile behavior. Only credentials and environment-specific IDs should come from `.env` or `-e` overrides.
+
+## Monitoring
+
+Live monitoring is intentionally kept out of this repo now. If you need Grafana/InfluxDB or any other monitoring stack, configure it as a separate project so the load-test suite stays portable and easy to clone.
+
 No npm install needed — the suite has **zero external CDN/package
 dependencies** so it runs fully offline aside from hitting the target API
 (deliberately avoided `jslib.k6.io` imports, which corporate proxies often

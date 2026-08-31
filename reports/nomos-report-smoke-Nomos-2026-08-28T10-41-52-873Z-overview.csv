@@ -1,9 +1,0 @@
-Metric,Value
-Report Type,Nomos Load Test Report
-Source JSON,report-smoke-Nomos-2026-08-28T10-41-52-873Z.json
-Generated At,2026-08-28T10:41:52.879Z
-Test Name,nomos-report-smoke-Nomos-2026-08-28T10-41-52-873Z
-Total Requests,127
-Failed Request %,15.748
-Checks Passed %,96.57
-Iterations,1

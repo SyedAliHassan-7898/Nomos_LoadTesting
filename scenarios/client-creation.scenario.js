@@ -330,7 +330,7 @@ function ensureCategory(token, moduleIds, moduleName, name, description, isShare
  * reward. This reproduces that exact sequence with realistic, non-placeholder data instead of
  * throwaway text like "Automated Test" / "vfdvdf" seen in the manual HAR capture.
  */
-function createRewardFlow(token, vu, iter) {
+export function createRewardFlow(token, vu, iter) {
   const suffix = `${vu}-${iter}-${Date.now()}`;
 
   console.log('[Reward Flow] Fetching reward providers...');
@@ -420,7 +420,7 @@ function createRewardFlow(token, vu, iter) {
   return reward;
 }
 
-function createChallengeFlow(token, categoryId, reward, vu, iter) {
+export function createChallengeFlow(token, categoryId, reward, vu, iter) {
   expectCondition(Boolean(categoryId), 'category/challenge: valid Challenges category id is available');
   if (!categoryId) return;
 
@@ -481,7 +481,7 @@ function createChallengeFlow(token, categoryId, reward, vu, iter) {
   }
 }
 
-function createForumFlow(token, forumCategoryId) {
+export function createForumFlow(token, forumCategoryId) {
   expectCondition(Boolean(forumCategoryId), 'forum: valid Forum category id is available');
   if (!forumCategoryId) return;
 
@@ -560,7 +560,7 @@ function createForumFlow(token, forumCategoryId) {
  * exact key we uploaded (not empty, not a default/placeholder path) — the
  * same check a human does by eyeballing whether the picture loads.
  */
-function createEventFlow(token, categoryId, vu, iter) {
+export function createEventFlow(token, categoryId, vu, iter) {
   expectCondition(Boolean(categoryId), 'event: valid Events category id is available');
   if (!categoryId) return;
 
@@ -641,7 +641,7 @@ function createEventFlow(token, categoryId, vu, iter) {
  * Real Course item creation (HAR-verified). Same rationale as createEventFlow —
  * this script previously never created an actual Course, only the category.
  */
-function createCourseFlow(token, categoryId, vu, iter) {
+export function createCourseFlow(token, categoryId, vu, iter) {
   expectCondition(Boolean(categoryId), 'course: valid Courses category id is available');
   if (!categoryId) return;
 
@@ -736,7 +736,7 @@ function createCourseFlow(token, categoryId, vu, iter) {
  *   GET  /api/course-materials/get-all-course-materials/{courseContentId}?attachableType=MODULE
  *   GET  /api/course-materials/get-all-course-materials/{lessonId}?attachableType=LESSON
  */
-function createCourseContentFlow(token, courseId, vu, iter) {
+export function createCourseContentFlow(token, courseId, vu, iter) {
   expectCondition(Boolean(courseId), 'course_content: valid course id is available');
   if (!courseId) return;
 
@@ -978,7 +978,7 @@ function createCourseContentFlow(token, courseId, vu, iter) {
   expectCondition(quizRows.some((row) => row && row.id === quizId), 'quiz/list: newly created quiz is retrievable');
 }
 
-function runCategoryAdminFlow(token, vu = 0, iter = 0) {
+export function runCategoryAdminFlow(token, vu = 0, iter = 0) {
   console.log(`--- [Category Flow] Starting category ecosystem ---`);
   const runTag = `${vu}-${iter}-${Date.now()}`;
   const seedRes = apiPost(CATEGORY_SEED_PATH, {}, token, {
@@ -1220,7 +1220,7 @@ function getTenantHeaders(token, portalOrigin, isMultipart = false) {
   return headers;
 }
 
-function runTenantAdminPostLoginFlow(clientTokens, portalOrigin) {
+export function runTenantAdminPostLoginFlow(clientTokens, portalOrigin) {
   console.log(`--- [Tenant Admin Flow] Starting post-login activity ---`);
   let token = clientTokens.accessToken;
   let refreshToken = clientTokens.refreshToken;

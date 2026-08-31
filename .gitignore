@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment and sensitive data
+.env
+.env.*
+!.env.example
+
+# Reports and test output
+reports/*.csv
+reports/*.json
+!reports/.gitkeep
+*.reports/
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
