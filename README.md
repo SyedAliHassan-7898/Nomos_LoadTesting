@@ -1,200 +1,153 @@
-# Nomos Super Admin — k6 Load Testing Suite
+# Nomos Super Admin - k6 Load Testing Suite
 
-This version hardens the load-test implementation around the failures found in the supplied 27-Aug-2026 run. It does **not** pretend to fix server-side defects that cannot be changed from a k6 client.
+This repository contains the load-test suite for the Nomos Super Admin portal API. It focuses on reproducible API flows, cleanly split scenarios, and file-based report generation.
 
-Load tests the Nomos Super Admin portal API (`api.nomos-dev.weuno.co`),
-reproducing the **exact real onboarding flow** captured from the browser
-(HAR) plus a full positive/negative/edge-case matrix derived from the
-Swagger spec.
+## What this repo does
 
-## Requirements
-## Fixes included in this version
+- Tests the Nomos Super Admin API at `api.nomos-dev.weuno.co`
+- Replays the real onboarding flow captured from the browser
+- Covers auth, client creation, client management, and related sub-flows
+- Generates local summary reports in `reports/`
+- Keeps live monitoring in a separate `monitoring/` folder
 
-- Exact k6 expected-status handling: status lists are no longer converted into broad numeric ranges.
-- Custom request headers are merged with generated headers, so adding `x-base-origin` no longer drops the Authorization header.
-- Portal image uploads validate that all seven explicit theme fields return distinct storage keys.
-- Added the missing `invalid-type.txt` test asset and a real 7.8 MB valid JPEG for oversized-file testing.
-- Unauthenticated, invalid-type, and oversized upload tests now require the intended negative statuses instead of accepting `201`.
-- Category module IDs are resolved from `GET /api/category/get-category-modules` by module name; static fallback is disabled by default.
-- Category creation resolves the exact requested category name instead of blindly reusing the first category returned.
-- Category responses are checked for the correct module name and module ID.
-- Concurrent category creation can recover from `409` by re-fetching the exact category.
-- Challenge creation sends `rewards: []`, `resources: []`, and `judges: []` when no entries are supplied, matching the successful API shape observed in the supplied response.
-- Forum topic creation never uses a category ID as a forum ID. It first resolves an actual forum whose `categoryId` matches the selected Forum category.
-- The stale `/api/badge` route is replaced by the verified `/api/admin/user-badges/display` route.
-- The customer `limit=-10` regression is asserted as a required `400`, so a server `500` remains visible instead of being hidden by a permissive assertion.
+## Current Structure
 
-## Important server-side findings
-
-The supplied run still demonstrates server-side defects that this client-side test project cannot directly patch: unauthenticated/invalid/oversized uploads returned `201`, `limit=-10` returned `500`, and the hardcoded client's theme-settings update returned `404`. The fixed suite deliberately keeps these as failing checks until the API is corrected. The source run also recorded a successful challenge creation response with `201` and empty `rewards`, `resources`, and `judges` arrays.
-
-
-- [k6](https://k6.io/docs/get-started/installation/) v0.5+ installed locally
-  (`brew install k6`, or download a binary from the
-  [releases page](https://github.com/grafana/k6/releases))
-- Network access to `https://api.nomos-dev.weuno.co`
+```text
+loadtest-nomos/
+├── main.js
+├── config/
+│   └── environment.js
+├── lib/
+├── scenarios/
+│   ├── auth.scenario.js
+│   ├── client-management.scenario.js
+│   ├── client-creation.scenario.js
+│   ├── client-creation.flow.js
+│   ├── category.scenario.js
+│   ├── challenge.scenario.js
+│   ├── course.scenario.js
+│   ├── event.scenario.js
+│   ├── forum.scenario.js
+│   ├── news-feed.scenario.js
+│   ├── reward.scenario.js
+│   └── tenant-admin.scenario.js
+├── assets/
+├── scripts/
+├── monitoring/
+├── reports/
+├── .env
+└── .env.example
+```
 
 ## Environment
 
-Keep secrets in `.env`. Copy `.env.example` to `.env` and fill only the credential values you want to override locally.
+- Keep local secrets in `.env`
+- Use `.env.example` as the committed template
+- `config/environment.js` reads values from `.env` first, then from `-e` overrides
+- Required values:
+  - `BASE_URL`
+  - `PORTAL_ORIGIN`
+  - `SUPER_ADMIN_EMAIL`
+  - `SUPER_ADMIN_PASSWORD`
+  - `HARDCODED_CLIENT_ID`
+  - `CLIENT_PORTAL_ORIGIN`
+  - `CLIENT_ADMIN_EMAIL`
+  - `CLIENT_ADMIN_PASSWORD`
+  - `CLIENT_ADMIN_DEVICE_ID`
 
-The test suite still uses the same defaults for URLs, assets, thresholds, and profile behavior. Only credentials and environment-specific IDs should come from `.env` or `-e` overrides.
+## How It Runs
+
+The root scripts run the suite with local summary output only:
+
+```bash
+npm run smoke
+npm run load
+npm run stress
+npm run spike
+npm run soak
+```
+
+Each profile runs the same scenario bundle:
+
+- auth checks
+- client creation flow
+- client management checks
+
+## What Each Scenario Covers
+
+### Auth
+
+- login
+- refresh token
+- logout
+- negative auth cases
+
+### Client Creation
+
+- login
+- profile checks
+- dashboard counts
+- customer listing
+- domain availability
+- portal asset uploads
+- client creation
+- client login to the new portal
+- post-create verification
+
+### Split Flows
+
+The client-creation workflow is split into reusable sub-files for cleaner maintenance:
+
+- category
+- reward
+- challenge
+- forum
+- event
+- course
+- tenant admin feed/news flow
+
+These are still behaviorally the same flow, just split for clarity and easier updates.
+
+### Client Management
+
+- fetch hardcoded client
+- list tenants
+- update theme settings
+- negative/edge checks
 
 ## Monitoring
 
-Live monitoring is intentionally kept out of this repo now. If you need Grafana/InfluxDB or any other monitoring stack, configure it as a separate project so the load-test suite stays portable and easy to clone.
+Live monitoring is not part of the root suite anymore. It lives separately under `monitoring/`.
 
-No npm install needed — the suite has **zero external CDN/package
-dependencies** so it runs fully offline aside from hitting the target API
-(deliberately avoided `jslib.k6.io` imports, which corporate proxies often
-block).
+Use that folder if you want Grafana + InfluxDB for live dashboards:
 
-## Project layout
-
-```
-loadtest/
-├── main.js                          # entrypoint: wires scenarios + load profile + thresholds
-├── config/
-│   └── environment.js               # SINGLE SOURCE OF TRUTH: URLs, creds, hardcoded client ID, assets
-├── lib/
-│   ├── http-client.js               # thin wrapper over k6/http with consistent headers + tags
-│   ├── data-generator.js            # unique payload builders (valid + every negative/edge shape)
-│   └── assertions.js                # reusable check() helpers, incl. the "never a 5xx" contract
-├── scenarios/
-│   ├── auth.scenario.js             # login / refresh / logout — positive + negative + edge
-│   ├── client-creation.scenario.js  # the exact 15-step HAR flow, unique client every run
-│   └── client-management.scenario.js# reads/updates against the fixed HARDCODED_CLIENT_ID
-├── assets/                          # real + intentionally-bad files used for multipart upload tests
-└── scripts/                         # one-liner wrappers for each load profile
+```powershell
+cd monitoring
+docker compose up -d
 ```
 
-## Why a "hardcoded client ID"?
+Then run k6 from the repo root with the monitoring output pointed to the monitoring stack:
 
-Every run creates a **brand-new client** (unique portal name, subdomain,
-email, username) to genuinely exercise the create-customer flow, exactly
-like a real admin onboarding a new customer. But that new client:
-
-- triggers a real verification email, and
-- is captcha-gated on its very first login,
-
-...so a script can never log into it. Any scenario that needs to act
-**on an existing client** (fetch by id, view/update theme settings, list
-all tenants, etc.) instead targets `ENV.HARDCODED_CLIENT_ID` — one fixed,
-already-verified fixture client you configure once.
-
-**Before your first real run**, open `config/environment.js` and set
-`HARDCODED_CLIENT_ID` to a real, already-verified client ID from the dev
-environment (a placeholder UUID ships by default and will 404).
-
-## Quick start
-
-```bash
-cd loadtest
-
-# 1. Sanity check — 2 VUs, 1 iteration each, fails fast on anything broken
-npm run smoke
-# or: k6 run -e PROFILE=smoke main.js
-
-# 2. Steady realistic load
-npm run load
-# or: k6 run -e PROFILE=load -e VUS=10 -e DURATION=2m main.js
-
-# 3. Stress — ramps to 4x VUS to find the breaking point
-npm run stress
-
-# 4. Spike — sudden 10x burst then back down
-npm run spike
-
-# 5. Soak — long steady duration to catch leaks/degradation
-DURATION=1h npm run soak
+```powershell
+k6 run -e PROFILE=smoke --out influxdb=http://localhost:8087/k6 main.js
 ```
 
-Every profile runs **all three scenarios every iteration**: auth checks,
-the full client-creation flow, then client-management checks.
+Grafana:
+- `http://localhost:3001`
+- `admin` / `admin`
 
-## Overriding config at run time
+## Reports
 
-Nothing needs to be edited to point at a different environment — every
-value in `config/environment.js` can be overridden with `-e`:
+Every run writes JSON/CSV summaries into `reports/`.
 
-```bash
-k6 run \
-  -e BASE_URL=https://api.nomos-staging.weuno.co \
-  -e SUPER_ADMIN_EMAIL=someone@nomos-tech.com \
-  -e SUPER_ADMIN_PASSWORD='...' \
-  -e HARDCODED_CLIENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
-  -e VUS=20 -e DURATION=5m \
-  main.js
-```
+- `summary-*.json` from `k6 --summary-export`
+- `report-*.json` from `handleSummary()`
+- CSV report files for overview, metrics, and checks
 
-## What's covered
+## Notes
 
-### Auth (`auth.scenario.js`)
-Login, refresh-token, logout. Positive session lifecycle plus: wrong
-password, unknown email, missing/empty body, malformed JSON, SQL-injection
-probe, oversized email, unauthenticated/tampered-token access to a
-protected route, garbage refresh token.
+- `HARDCODED_CLIENT_ID` must point to a real verified client for existing-client flows
+- File uploads use assets in `assets/`
+- Thresholds live in `config/environment.js`
+- The suite does not require npm dependencies beyond the repo itself
 
-### Client creation (`client-creation.scenario.js`)
-The **exact 15-step sequence** reconstructed from the HAR capture:
-
-1. `POST /api/super-admin/auth/login`
-2. `GET /api/super-admin/users/profile`
-3. `GET /api/super-admin/portals/get-counts-for-dashboard`
-4. `GET /api/super-admin/users/profile` (UI re-fetches)
-5. `GET /api/super-admin/customers?page=1&limit=10&isActive=true`
-6. `GET /api/super-admin/domains/custom-domain/available`
-7–13. `POST /api/files-upload/client-portal` ×7 (profile, bg, email logo,
-   favicon, login logo, sidebar logo, welcome image)
-14. `POST /api/super-admin/customers` — **unique** name/subdomain/email/username every run
-15. `GET /api/super-admin/customers?...` — verify the new client appears
-
-Interleaved negative/edge cases: unauthenticated create, empty payload,
-invalid types/enums, oversized field values, SQL-injection/XSS strings in
-free-text fields, duplicate portal name (second create of the same
-payload), invalid file type upload, oversized file upload, unauthenticated
-upload, and pagination edge cases (page=0, negative page/limit, huge
-limit, non-numeric, SQL-injection in `search`, invalid boolean).
-
-### Client management (`client-management.scenario.js`)
-Everything that acts on an **existing** client, always via
-`HARDCODED_CLIENT_ID`: fetch by id, list all tenants, fetch/update theme
-settings. Negative/edge: non-existent id (404), malformed id, unauthenticated,
-tampered token, invalid color value on theme update, change-status /
-verify-customer probed against a non-existent id (route-existence + "never
-5xx" checks only — see the comment in that file for why the mutating
-positive calls against the real fixture client are opt-in via
-`-e RUN_MUTATING_STATUS_CHECKS=true`).
-
-## Safety contract
-
-Every negative/edge check asserts **the API never returns a 5xx**, even
-under intentionally malformed, adversarial, or oversized input. That's the
-one non-negotiable pass/fail bar across the whole suite — everything else
-(exact status code, exact validation message) is a secondary check.
-
-## Metrics & thresholds
-
-Every request is tagged (`endpoint`, `scenario`, `case`) so you can slice
-results in the summary or in Grafana/InfluxDB by endpoint or by
-positive/negative case. Thresholds live in `config/environment.js`:
-
-- `http_req_failed` rate < 5%
-- `http_req_duration` p95 < 2000ms overall, with tighter per-endpoint
-  budgets for `login`, `create_customer`, and `file_upload`
-- `checks` pass rate > 95%
-
-Add `--summary-export=summary.json` (already wired into the `scripts/`
-wrappers) to get a machine-readable report for CI/dashboards.
-
-## Notes / things to double-check before a big run
-
-- **`HARDCODED_CLIENT_ID`** must be a real, verified client in whichever
-  environment you point at, or every client-management check will 404.
-- **File uploads** use the placeholder assets in `assets/`. Swap in
-  representative real images if the "positive" upload assertions need to
-  reflect realistic file sizes.
-- **Rate limits**: the dev API returned `x-ratelimit-limit: 2000` per
-  window in the captured HAR. High VU counts on `stress`/`spike` profiles
-  may hit that — if you see a wall of 429s, that's the app's rate limiter
-  working as intended, not a bug in the script.
