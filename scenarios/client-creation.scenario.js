@@ -45,6 +45,8 @@ import {
   expectCondition,
 } from '../lib/assertions.js';
 import { loginSuperAdmin } from './auth.scenario.js';
+import { runAdminFlow } from './admin-flow.scenario.js';
+import { waitForLoginRateLimit } from '../lib/login-rate-limit.js';
 import {
   buildValidCustomerPayload,
   buildEmptyCustomerPayload,
@@ -1121,6 +1123,7 @@ function loginCreatedClient(portalOrigin) {
 
   console.log(`[Client Login] Step 1: POST ${CLIENT_LOGIN_PATH} for tenant: ${subdomain}`);
   // Step 1 — initial attempt (matches HAR entry 1)
+  waitForLoginRateLimit('Client Login');
   const res1 = apiPost(CLIENT_LOGIN_PATH, basePayload, null, {
     tags: { endpoint: 'client_login', scenario: 'client_creation', case: 'positive_client_login_step1' },
     params: {
@@ -1167,6 +1170,7 @@ function loginCreatedClient(portalOrigin) {
   // Step 2 — force-login to evict the stale session (matches HAR entry 2)
   sleep(0.2);
   console.log(`[Client Login] Step 2 (Force Login): POST ${CLIENT_LOGIN_PATH}`);
+  waitForLoginRateLimit('Client Login');
   const res2 = apiPost(CLIENT_LOGIN_PATH, { ...basePayload, forceLogin: true }, null, {
     tags: { endpoint: 'client_login', scenario: 'client_creation', case: 'positive_client_login_step2_force' },
     params: {
@@ -1630,6 +1634,7 @@ export function runClientCreationScenario(vu, iter) {
   console.log(`[Client Creation] Performing client admin portal login...`);
   const clientTokens = loginCreatedClient(ENV.CLIENT_PORTAL_ORIGIN);
   if (clientTokens && clientTokens.accessToken) {
+    runAdminFlow(clientTokens.accessToken, vu, iter);
     runTenantAdminPostLoginFlow(clientTokens, ENV.CLIENT_PORTAL_ORIGIN);
   } else {
     console.log(`[Client Creation] Client admin login failed, skipping tenant admin flow.`);

@@ -75,7 +75,9 @@ function buildScenarios(profile) {
         executor: 'per-vu-iterations',
         vus: 1,          // exactly 1 VU → exactly 1 iteration → exactly 1 client created
         iterations: 1,
-        maxDuration: '2m',
+        // The full smoke iteration includes the 5/60s login limiter, uploads,
+        // admin setup, tenant content, and category sub-flows.
+        maxDuration: '10m',
       };
   }
 }

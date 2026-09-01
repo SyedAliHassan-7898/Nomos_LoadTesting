@@ -19,6 +19,7 @@ loadtest-nomos/
 │   └── environment.js
 ├── lib/
 ├── scenarios/
+│   ├── admin-flow.scenario.js
 │   ├── auth.scenario.js
 │   ├── client-management.scenario.js
 │   ├── client-creation.scenario.js
@@ -81,6 +82,13 @@ Each profile runs the same scenario bundle:
 - refresh token
 - logout
 - negative auth cases
+- login requests are paced at Nomos's `5 requests / 60 seconds` rolling limit
+
+For `smoke`, this pacing keeps the negative and valid login checks inside one
+allowed window, and the smoke timeout is long enough for the complete flow.
+For multi-VU profiles, the same credentials/IP/device must not
+be used beyond the server's shared limit; use approved test identities/IPs or
+coordinate the limit with the API team before running load tests.
 
 ### Client Creation
 
@@ -93,6 +101,16 @@ Each profile runs the same scenario bundle:
 - client creation
 - client login to the new portal
 - post-create verification
+
+### Admin Flow
+
+After Client Admin login, `admin-flow.scenario.js` follows the captured tenant admin flow:
+
+- create a role
+- fetch all available permissions and assign them to that role
+- create an organization using the created role
+- create a badge for that organization
+- upload desktop/mobile banner images and create a News banner
 
 ### Split Flows
 
@@ -150,4 +168,3 @@ Every run writes JSON/CSV summaries into `reports/`.
 - File uploads use assets in `assets/`
 - Thresholds live in `config/environment.js`
 - The suite does not require npm dependencies beyond the repo itself
-
