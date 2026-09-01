@@ -97,7 +97,7 @@ function uploadFile(path, bytes, fileName, token, label) {
   return key;
 }
 
-function createRole(token, suffix) {
+export function createRoleFlow(token, suffix) {
   const initialRolesRes = apiGet(ROLE_LIST_PATH, token, {
     params: { headers: adminHeaders(token) },
     tags: { endpoint: 'list_roles', scenario: 'admin_flow', case: 'before_create' },
@@ -161,7 +161,7 @@ function createRole(token, suffix) {
   return roleId;
 }
 
-function createOrganization(token, roleId, suffix) {
+export function createOrganizationFlow(token, roleId, suffix) {
   const listRes = apiGet(ORGANIZATIONS_LIST_PATH, token, {
     params: { headers: adminHeaders(token) },
     tags: { endpoint: 'list_organizations', scenario: 'admin_flow' },
@@ -292,10 +292,10 @@ function createBanner(token, suffix) {
 export function runAdminFlow(token, vu = 0, iter = 0) {
   console.log('--- [Admin Flow] Starting role, organization, badge, and banner flow ---');
   const suffix = `${vu}-${iter}-${Date.now()}`;
-  const roleId = createRole(token, suffix);
+  const roleId = createRoleFlow(token, suffix);
   console.log(`[Admin Flow] Role created and permissions assigned: ${Boolean(roleId)}`);
   if (roleId) {
-    const organizationId = createOrganization(token, roleId, suffix);
+    const organizationId = createOrganizationFlow(token, roleId, suffix);
     console.log(`[Admin Flow] Organization created: ${Boolean(organizationId)}`);
     if (organizationId) {
       createBadge(token, organizationId, suffix);

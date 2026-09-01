@@ -1,1 +1,2 @@
-export { createEventFlow } from './client-creation.scenario.js';
+/** Event creation flow. */
+export { createEventFlow } from './client-creation.core.js';
