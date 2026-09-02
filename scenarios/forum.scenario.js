@@ -1,1 +1,2 @@
-export { createForumFlow } from './client-creation.scenario.js';
+/** Forum topic creation flow. */
+export { createForumFlow } from './client-creation.core.js';

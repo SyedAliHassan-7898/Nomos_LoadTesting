@@ -24,6 +24,7 @@
 import { sleep } from 'k6';
 import { ENV } from '../config/environment.js';
 import { apiPost, apiGet, safeJson } from '../lib/http-client.js';
+import { waitForLoginRateLimit } from '../lib/login-rate-limit.js';
 import {
   expectStatus,
   expectSuccessTrue,
@@ -37,13 +38,16 @@ const REFRESH_PATH = '/api/super-admin/auth/refresh-token';
 const LOGOUT_PATH = '/api/super-admin/auth/logout';
 const PROFILE_PATH = '/api/super-admin/users/profile';
 
+function postLogin(body, options = {}) {
+  waitForLoginRateLimit('Auth');
+  return apiPost(LOGIN_PATH, body, null, options);
+}
+
 /** Logs in as super admin and returns { accessToken, refreshToken } or null on failure. */
 export function loginSuperAdmin() {
   console.log(`[Auth] Attempting Super Admin login with email: ${ENV.SUPER_ADMIN_EMAIL}...`);
-  const res = apiPost(
-    LOGIN_PATH,
+  const res = postLogin(
     { email: ENV.SUPER_ADMIN_EMAIL, password: ENV.SUPER_ADMIN_PASSWORD },
-    null,
     { tags: { endpoint: 'login', scenario: 'auth', case: 'positive_valid_login' } }
   );
 
@@ -66,10 +70,8 @@ export function loginSuperAdmin() {
 
 function negativeWrongPassword() {
   console.log(`[Auth] [Negative] Login with wrong password...`);
-  const res = apiPost(
-    LOGIN_PATH,
+  const res = postLogin(
     { email: ENV.SUPER_ADMIN_EMAIL, password: 'definitely-wrong-password-123!' },
-    null,
     { tags: { endpoint: 'login', scenario: 'auth', case: 'negative_wrong_password' }, expectedStatuses: [400, 401, 403, 404, 422] }
   );
   console.log(`[Auth] [Negative] Wrong password status: ${res.status}`);
@@ -80,10 +82,8 @@ function negativeWrongPassword() {
 
 function negativeUnknownEmail() {
   console.log(`[Auth] [Negative] Login with unknown email...`);
-  const res = apiPost(
-    LOGIN_PATH,
+  const res = postLogin(
     { email: `no-such-user-${Date.now()}@yopmail.com`, password: 'whatever123' },
-    null,
     { tags: { endpoint: 'login', scenario: 'auth', case: 'negative_unknown_email' }, expectedStatuses: [400, 401, 404] }
   );
   console.log(`[Auth] [Negative] Unknown email status: ${res.status}`);
@@ -94,10 +94,8 @@ function negativeUnknownEmail() {
 
 function negativeMissingPassword() {
   console.log(`[Auth] [Negative] Login with missing password field...`);
-  const res = apiPost(
-    LOGIN_PATH,
+  const res = postLogin(
     { email: ENV.SUPER_ADMIN_EMAIL },
-    null,
     { tags: { endpoint: 'login', scenario: 'auth', case: 'negative_missing_password' }, expectedStatuses: [400] }
   );
   console.log(`[Auth] [Negative] Missing password status: ${res.status}`);
@@ -107,7 +105,7 @@ function negativeMissingPassword() {
 
 function negativeEmptyBody() {
   console.log(`[Auth] [Negative] Login with empty body...`);
-  const res = apiPost(LOGIN_PATH, {}, null, {
+  const res = postLogin({}, {
     tags: { endpoint: 'login', scenario: 'auth', case: 'negative_empty_body' },
     expectedStatuses: [400],
   });
@@ -118,7 +116,7 @@ function negativeEmptyBody() {
 
 function negativeMalformedJson() {
   console.log(`[Auth] [Negative] Login with malformed JSON...`);
-  const res = apiPost(LOGIN_PATH, '{"email": "bad-json@yopmail.com", "password": ', null, {
+  const res = postLogin('{"email": "bad-json@yopmail.com", "password": ', {
     raw: true,
     tags: { endpoint: 'login', scenario: 'auth', case: 'negative_malformed_json' },
     expectedStatuses: [400],
@@ -130,10 +128,8 @@ function negativeMalformedJson() {
 
 function negativeInjectionEmail() {
   console.log(`[Auth] [Negative] Login with SQL injection in email...`);
-  const res = apiPost(
-    LOGIN_PATH,
+  const res = postLogin(
     { email: `' OR '1'='1' -- @yopmail.com`, password: `' OR '1'='1` },
-    null,
     { tags: { endpoint: 'login', scenario: 'auth', case: 'negative_sql_injection' }, expectedStatuses: [400, 401] }
   );
   console.log(`[Auth] [Negative] SQL injection status: ${res.status}`);
@@ -143,10 +139,8 @@ function negativeInjectionEmail() {
 
 function negativeOversizedEmail() {
   console.log(`[Auth] [Negative] Login with oversized email...`);
-  const res = apiPost(
-    LOGIN_PATH,
+  const res = postLogin(
     { email: `${'a'.repeat(3000)}@yopmail.com`, password: 'whatever123' },
-    null,
     { tags: { endpoint: 'login', scenario: 'auth', case: 'negative_oversized_email' }, expectedStatuses: [400, 413, 414] }
   );
   console.log(`[Auth] [Negative] Oversized email status: ${res.status}`);
